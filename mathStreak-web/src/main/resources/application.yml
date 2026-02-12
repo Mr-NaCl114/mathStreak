@@ -1,0 +1,5 @@
+spring:
+  config:
+    name: mathStreak-mvc
+  profiles:
+    active: dev
