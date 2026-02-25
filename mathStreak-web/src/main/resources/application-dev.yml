@@ -26,6 +26,14 @@ spring:
     maxPoolPreparedStatementPerConnectionSize: 20
     filters: stat
 
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      password: 114514
+      database: 1
+
+
 #mybatis:
 #  mapper-locations: classpath:/mybatis/mapper/*.xml
 #  config-location:  classpath:/mybatis/config/mybatis-config.xml
