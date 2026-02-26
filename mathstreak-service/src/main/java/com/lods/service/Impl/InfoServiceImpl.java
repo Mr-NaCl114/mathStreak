@@ -40,9 +40,7 @@ public class InfoServiceImpl implements InfoService {
         int random = ThreadLocalRandom.current().nextInt(total + 1);
         log.info("当前总计选择题： {} ，抽取选择题题号： {}", total, random);
 
-        log.info("{}",choiceQuestionDao.getQuestions(total));
-
-        return choiceQuestionDao.getQuestions(total);
+        return choiceQuestionDao.getQuestions(random);
     }
 
     private Integer parseInt(String value) {

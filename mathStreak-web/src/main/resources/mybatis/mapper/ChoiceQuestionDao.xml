@@ -16,7 +16,7 @@
     </resultMap>
 
     <select id="getQuestions" resultMap="ChoiceQuestionMap">
-        select * from choice where id = #{ramId}
+        select id, question, opt_a, opt_b, opt_c, opt_d, diff from choice where id = #{ramId}
     </select>
 
     <select id="getTotal" resultMap="ChoiceQuestionMap">
