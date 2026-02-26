@@ -23,6 +23,7 @@
         <module>mathStreak-web</module>
         <module>mathstreak-common</module>
         <module>mathstreak-service</module>
+        <module>mathStreak-dao</module>
     </modules>
 
     <licenses>

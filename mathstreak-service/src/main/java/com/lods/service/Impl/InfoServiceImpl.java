@@ -1,6 +1,7 @@
 package com.lods.service.Impl;
 
 import com.lods.domain.res.GameStateRes;
+import com.lods.domain.vo.QuestionVO;
 import com.lods.service.InfoService;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -24,6 +25,11 @@ public class InfoServiceImpl implements InfoService {
                 .maxLife(parseInt(stringRedisTemplate.opsForValue().get("maxLife")))
                 .ipLimit(parseInt(stringRedisTemplate.opsForValue().get("ipLimit")))
                 .build();
+    }
+
+    @Override
+    public QuestionVO getQuestion() {
+        return null;
     }
 
     private Integer parseInt(String value) {

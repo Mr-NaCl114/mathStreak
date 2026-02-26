@@ -27,4 +27,13 @@ public class InfoController {
                 .data(infoService.getGameState())
                 .build();
     }
+
+    @GetMapping("current-question")
+    public Response<Object> currentQuestion(){
+        return Response.builder()
+                .code(Constants.ResponseCode.SUCCESS.getCode())
+                .info(Constants.ResponseCode.SUCCESS.getMsg())
+                .data(infoService.getGameState())
+                .build();
+    }
 }
