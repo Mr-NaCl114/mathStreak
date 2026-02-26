@@ -10,8 +10,8 @@ public class Constants {
     @NoArgsConstructor
     @Getter
     public enum ResponseCode {
-        SUCCESS("0000", "调用成功"),
-        UN_ERROR("0001", "调用失败"),
+        SUCCESS("0000", "success"),
+        UN_ERROR("0001", "fail"),
         ILLEGAL_PARAMETER("0002", "非法参数");
 
         private String code;

@@ -5,17 +5,19 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Map;
-
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class QuestionVO {
+public class ChoiceQuestionVO {
 
-    private Long questionId;
+    private Integer questionId;
     private String description;
-    private Map<Integer,String> answers;
+    private String optA;
+    private String optB;
+    private String optC;
+    private String optD;
+    private String answer;
     private Integer difficultyLevel;
-    private String Type;
+    private Integer total;
 }

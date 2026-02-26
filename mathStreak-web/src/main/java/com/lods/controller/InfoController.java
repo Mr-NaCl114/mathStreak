@@ -33,7 +33,7 @@ public class InfoController {
         return Response.builder()
                 .code(Constants.ResponseCode.SUCCESS.getCode())
                 .info(Constants.ResponseCode.SUCCESS.getMsg())
-                .data(infoService.getGameState())
+                .data(infoService.getQuestion())
                 .build();
     }
 }
