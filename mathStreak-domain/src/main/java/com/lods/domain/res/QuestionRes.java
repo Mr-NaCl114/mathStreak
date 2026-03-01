@@ -1,4 +1,4 @@
-package com.lods.domain.vo;
+package com.lods.domain.res;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,15 +9,14 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ChoiceQuestionVO {
+public class QuestionRes {
 
+    private Integer type;
     private Integer questionId;
     private String description;
     private String optA;
     private String optB;
     private String optC;
     private String optD;
-    private String answer;
     private Integer difficultyLevel;
-    private Integer total;
 }

@@ -22,11 +22,11 @@ public class Constants {
     @AllArgsConstructor
     @Getter
     public enum AnswerRes {
-        RIGHT("1000", "正确"),
-        FALI("1001", "错误"),
-        OTHER_FAULT("1002", "失败");
+        RIGHT(1000, "正确"),
+        FALI(1001, "错误"),
+        OTHER_FAULT(1002, "失败");
 
-        private String code;
+        private Integer code;
         private String msg;
 
     }
@@ -43,5 +43,28 @@ public class Constants {
         private final int level;
         private final String desc;
 
+    }
+
+    @AllArgsConstructor
+    @Getter
+    public enum TypeOfQuestion {
+        CHOICE(1,"选择题"),
+        GAP(2,"填空题");
+
+        private final Integer code;
+        private final String type;
+
+    }
+
+    @AllArgsConstructor
+    @Getter
+    public enum WebStatus {
+        LIFE("life"),
+        MAX_LIFE("maxLife"),
+        TOTAL_STREAK("totalStreak"),
+        MAX_STREAK("maxStreak"),
+        IP_LIMIT("ipLimit");
+
+        private final String value;
     }
 }

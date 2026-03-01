@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.lods.dao.ChoiceQuestionDao">
 
-    <resultMap id="ChoiceQuestionMap" type="com.lods.domain.vo.ChoiceQuestionVO">
+    <resultMap id="ChoiceQuestionMap" type="com.lods.domain.po.Question">
         <id column="id" property="questionId"/>
         <result column="question" property="description"/>
         <result column="opt_a" property="optA"/>
@@ -16,7 +16,7 @@
     </resultMap>
 
     <select id="getQuestions" resultMap="ChoiceQuestionMap">
-        select id, question, opt_a, opt_b, opt_c, opt_d, diff from choice where id = #{ramId}
+        select * from choice where id = #{id}
     </select>
 
     <select id="getTotal" resultMap="ChoiceQuestionMap">

@@ -2,12 +2,10 @@ package com.lods.dao;
 
 import com.lods.domain.po.Question;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
 
 @Mapper
-public interface ChoiceQuestionDao {
-
-    Question getQuestions(int id);
+public interface GapQuestionDao {
+    Question getQuestions(int ramId);
 
     Question getTotal();
 }
