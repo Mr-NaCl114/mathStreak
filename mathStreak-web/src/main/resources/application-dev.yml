@@ -10,7 +10,7 @@ server:
 spring:
   datasource:
     username: math
-    password: 7891919
+    password: 
     url: jdbc:mysql://127.0.0.1:3308/mathstreak?useUnicode=true&characterEncoding=utf8&autoReconnect=true&zeroDateTimeBehavior=convertToNull&serverTimezone=Asia/Shanghai&useSSL=true
     driver-class-name: com.mysql.cj.jdbc.Driver
     initialSize: 5
