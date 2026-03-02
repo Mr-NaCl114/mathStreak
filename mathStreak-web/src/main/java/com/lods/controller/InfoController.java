@@ -17,15 +17,6 @@ public class InfoController {
     @Resource
     private InfoService infoService;
 
-//    @GetMapping("state")
-//    public Response<Object> getState() {
-//        return Response.builder()
-//                .code(Constants.ResponseCode.SUCCESS.getCode())
-//                .info(Constants.ResponseCode.SUCCESS.getMsg())
-//                .data(infoService.getGameState())
-//                .build();
-//    }
-
     @GetMapping("current-question")
     public Response<Object> currentQuestion() throws Exception{
         return Response.builder()
