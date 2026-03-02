@@ -12,12 +12,6 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.lods</groupId>
-            <artifactId>mathstreak-common</artifactId>
-            <version>1.0.0</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
         </dependency>
