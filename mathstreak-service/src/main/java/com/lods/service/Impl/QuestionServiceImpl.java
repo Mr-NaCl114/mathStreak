@@ -10,7 +10,7 @@ import com.lods.domain.res.CheckRes;
 import com.lods.domain.res.GameStateRes;
 import com.lods.domain.res.QuestionRes;
 import com.lods.common.util.ParseInt;
-import com.lods.service.InfoService;
+import com.lods.service.QuestionService;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.matheclipse.core.eval.ExprEvaluator;
@@ -22,7 +22,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 @Slf4j
 @Service
-public class InfoServiceImpl implements InfoService {
+public class QuestionServiceImpl implements QuestionService {
 
     ParseInt parseInt = new ParseInt();
     @Resource
