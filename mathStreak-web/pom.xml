@@ -5,7 +5,7 @@
     <parent>
         <groupId>com.lods</groupId>
         <artifactId>mathStreak-mvc</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>1.0.0</version>
     </parent>
 
     <artifactId>mathStreak-web</artifactId>
@@ -14,19 +14,19 @@
         <dependency>
             <groupId>com.lods</groupId>
             <artifactId>mathstreak-common</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <version>1.0.0</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.lods</groupId>
             <artifactId>mathStreak-domain</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <version>1.0.0</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.lods</groupId>
             <artifactId>mathstreak-service</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <version>1.0.0</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
