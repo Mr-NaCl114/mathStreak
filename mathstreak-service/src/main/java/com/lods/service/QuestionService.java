@@ -5,7 +5,6 @@ import com.lods.domain.res.QuestionRes;
 import com.lods.domain.res.CheckRes;
 
 public interface QuestionService {
-//    GameStateRes getGameState();
 
     QuestionRes getQuestion() throws Exception;
 

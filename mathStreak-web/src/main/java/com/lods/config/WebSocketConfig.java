@@ -1,6 +1,6 @@
 package com.lods.config;
 
-import com.lods.service.handler.LodsWebSocketHandler;
+import com.lods.handler.LodsWebSocketHandler;
 import jakarta.annotation.Resource;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.socket.config.annotation.EnableWebSocket;

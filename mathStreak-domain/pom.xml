@@ -5,10 +5,11 @@
     <parent>
         <groupId>com.lods</groupId>
         <artifactId>mathStreak-mvc</artifactId>
-        <version>1.0.0</version>
+        <version>${revision}</version>
     </parent>
 
     <artifactId>mathStreak-domain</artifactId>
+    <packaging>jar</packaging>
 
     <dependencies>
         <dependency>

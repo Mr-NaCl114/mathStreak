@@ -13,7 +13,7 @@
 
     <groupId>com.lods</groupId>
     <artifactId>mathStreak-mvc</artifactId>
-    <version>1.0.0</version>
+    <version>${revision}</version>
     <name>mathStreak-mvc</name>
     <description>mathStreak-mvc</description>
 
@@ -26,11 +26,14 @@
     </modules>
 
     <properties>
+        <revision>1.0.1</revision>
         <java.version>21</java.version>
         <mybatis.version>4.0.1</mybatis.version>
         <matheclipse.version>3.1.1</matheclipse.version>
         <lombok.version>1.18.42</lombok.version>
         <mysql-connector-j.version>9.6.0</mysql-connector-j.version>
+        <thymeleaf-extras-springsecurity6.version>3.1.1</thymeleaf-extras-springsecurity6.version>
+        <spring-security-crypto.version>7.1.0-M2</spring-security-crypto.version>
 
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
@@ -39,6 +42,13 @@
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-crypto</artifactId>
+                <version>${spring-security-crypto.version}</version>
+                <scope>compile</scope>
+            </dependency>
+
             <dependency>
                 <groupId>org.mybatis.spring.boot</groupId>
                 <artifactId>mybatis-spring-boot-starter</artifactId>
@@ -86,6 +96,37 @@
                         </path>
                     </annotationProcessorPaths>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>flatten-maven-plugin</artifactId>
+                <version>1.7.3</version>
+                <inherited>true</inherited>
+                <executions>
+                    <execution>
+                        <id>flatten</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>flatten</goal>
+                        </goals>
+                        <configuration>
+                            <updatePomFile>true</updatePomFile>
+                            <flattenMode>resolveCiFriendliesOnly</flattenMode>
+                            <pomElements>
+                                <parent>expand</parent>
+                                <distributionManagement>remove</distributionManagement>
+                                <repositories>remove</repositories>
+                            </pomElements>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>flatten.clean</id>
+                        <phase>clean</phase>
+                        <goals>
+                            <goal>clean</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

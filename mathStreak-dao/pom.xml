@@ -5,16 +5,17 @@
     <parent>
         <groupId>com.lods</groupId>
         <artifactId>mathStreak-mvc</artifactId>
-        <version>1.0.0</version>
+        <version>${revision}</version>
     </parent>
 
     <artifactId>mathStreak-dao</artifactId>
+    <packaging>jar</packaging>
 
     <dependencies>
         <dependency>
             <groupId>com.lods</groupId>
             <artifactId>mathStreak-domain</artifactId>
-            <version>1.0.0</version>
+            <version>${revision}</version>
             <scope>compile</scope>
         </dependency>
 

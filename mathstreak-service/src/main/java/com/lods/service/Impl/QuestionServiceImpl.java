@@ -2,7 +2,6 @@ package com.lods.service.Impl;
 
 import com.lods.common.constants.Constants;
 import com.lods.dao.GapQuestionDao;
-import com.lods.service.handler.LodsWebSocketHandler;
 import com.lods.dao.ChoiceQuestionDao;
 import com.lods.domain.dto.SubmitDTO;
 import com.lods.domain.po.Question;
@@ -24,7 +23,6 @@ import java.util.concurrent.ThreadLocalRandom;
 @Service
 public class QuestionServiceImpl implements QuestionService {
 
-    ParseInt parseInt = new ParseInt();
     @Resource
     private StringRedisTemplate stringRedisTemplate;
     @Resource
@@ -32,21 +30,10 @@ public class QuestionServiceImpl implements QuestionService {
     @Resource
     private GapQuestionDao gapQuestionDao;
     @Resource
-    private LodsWebSocketHandler lodsWebSocketHandler;
-    @Resource
     private StreakCount streakCount;
 
     @Override
     public QuestionRes getQuestion() throws Exception {
-        // socket推送
-        GameStateRes res = GameStateRes.builder()
-                .totalStreak(parseInt.parseInt(stringRedisTemplate.opsForValue().get(Constants.WebStatus.TOTAL_STREAK.getValue())))
-                .maxStreak(parseInt.parseInt(stringRedisTemplate.opsForValue().get(Constants.WebStatus.MAX_STREAK.getValue())))
-                .life(parseInt.parseInt(stringRedisTemplate.opsForValue().get(Constants.WebStatus.LIFE.getValue())))
-                .maxLife(parseInt.parseInt(stringRedisTemplate.opsForValue().get(Constants.WebStatus.MAX_LIFE.getValue())))
-                .ipLimit(parseInt.parseInt(stringRedisTemplate.opsForValue().get(Constants.WebStatus.IP_LIMIT.getValue())))
-                .build();
-        lodsWebSocketHandler.sendMessage(res);
 
         Question questions = new Question();
 

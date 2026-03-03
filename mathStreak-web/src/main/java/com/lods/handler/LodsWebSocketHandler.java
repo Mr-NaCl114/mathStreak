@@ -1,4 +1,4 @@
-package com.lods.service.handler;
+package com.lods.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lods.common.constants.Constants;
@@ -22,21 +22,21 @@ public class LodsWebSocketHandler extends TextWebSocketHandler {
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
-        System.out.println("新连接建立: " + session.getId());
+        log.info("新连接建立: {}", session.getId());
         sessionMap.put(session.getId(), session);
         log.info("seesion: {} , {}", session.getId(), session.getRemoteAddress());
-        session.sendMessage(new TextMessage("欢迎连接 WebSocket 服务器！"));
+        session.sendMessage(new TextMessage("连接完成"));
     }
 
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
-        System.out.println("收到消息: " + message.getPayload());
+        log.info("收到消息: {}", message.getPayload());
         session.sendMessage(new TextMessage("服务器收到: " + message.getPayload()));
     }
 
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
-        System.out.println("连接关闭: " + session.getId());
+        log.info("连接关闭: {}", session.getId());
         sessionMap.remove(session.getId());
     }
 
