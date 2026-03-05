@@ -1,0 +1,89 @@
+services:
+  # MySQL 9.0.1
+  # 对应 application-dev.yml 连接地址: jdbc:mysql://mysql:3306/mathstreak (注意容器内互联使用服务名 mysql 和默认端口 3306)
+  mysql:
+    image: mysql:9.0.1
+    container_name: mysql
+    restart: always
+    environment:
+      TZ: Asia/Shanghai
+      MYSQL_ROOT_PASSWORD: 7891919
+      MYSQL_DATABASE: mathstreak/home/ubuntu/work/IDEA/mathStreak-mvc/mathStreak-web/src/main/resources/temp/mysql
+      MYSQL_USER: math
+      MYSQL_PASSWORD: password    # 请确保这里设置的密码与应用配置一致
+    ports:
+      - "3308:3306"
+    volumes:
+      #      - ./src/main/resources/temp/mysql:/docker-entrypoint-initdb.d
+      - /home/ubuntu/work/IDEA/mathStreak-mvc/mathStreak-web/src/main/resources/temp/mysql:/docker-entrypoint-initdb.d
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    networks:
+      - my-network
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Redis 7.4.0
+  redis:
+    image: redis:7.4.0
+    container_name: redis
+    restart: always
+    ports:
+      - "6379:6379"
+    command: redis-server --requirepass 114514 --appendonly yes
+    volumes:
+      - ./redis/data:/data
+    networks:
+      - my-network
+    healthcheck:
+      test: [ "CMD", "redis-cli", "-a", "114514", "ping" ]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  #  redis-importer:
+  #    image: redis:7.4.0
+  #    depends_on:
+  #      - redis
+  #    volumes:
+  #      # 挂载 Redis 命令文件
+  #      - ./src/main/resources/temp/math.redis:/data/math.redis
+  #    # 等待 Redis 启动后，使用 redis-cli 导入数据
+  #    # 注意：这里使用了之前 application.yml 里提到的密码 114514
+  #    command: >
+  #      /bin/sh -c "sleep 5; cat /data/math.redis | redis-cli -h redis -a 114514"
+
+  # MathStreak Application
+  mathstreak:
+    pull_policy: never
+    image: mathstreak:latest
+    # build: .
+    container_name: mathstreak
+    restart: on-failure
+    ports:
+      - "10001:10001"
+    environment:
+      - TZ=Asia/Shanghai
+      - SERVER_PORT=10001
+      # 覆盖 application.yml 中的配置，使用 docker 网络中的服务名
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/mathstreak?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true
+      - SPRING_DATASOURCE_USERNAME=math
+      - SPRING_DATASOURCE_PASSWORD=password
+      - SPRING_DATA_REDIS_HOST=redis
+      - SPRING_DATA_REDIS_PORT=6379
+      - SPRING_DATA_REDIS_PASSWORD=114514
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    volumes:
+      - ./log:/var/log/mathstreak
+    networks:
+      - my-network
+
+networks:
+  my-network:
+    driver: bridge

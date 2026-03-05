@@ -1,0 +1,5 @@
+SET life 3
+SET maxStreak 24
+SET ipLimit 12
+SET maxLife 12
+SET totalStreak 0
