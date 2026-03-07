@@ -2,9 +2,10 @@ package com.lods.service;
 
 import com.lods.domain.dto.UserLoginDTO;
 import com.lods.domain.dto.UserRegisterDTO;
+import com.lods.domain.res.UserRegOrLoginRes;
 
 public interface UserService {
     boolean login(UserLoginDTO userLoginDTO);
 
-    boolean register(UserRegisterDTO userRegisterDTO);
+    UserRegOrLoginRes register(UserRegisterDTO userRegisterDTO);
 }

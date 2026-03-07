@@ -19,8 +19,8 @@ public class AccountController {
     private UserService userService;
 
     @PostMapping("login")
-    public Response<Object> login(@RequestBody UserLoginDTO userLoginDTO) throws Exception{
-        if(userService.login(userLoginDTO)){
+    public Response<Object> login(@RequestBody UserLoginDTO userLoginDTO) throws Exception {
+        if (userService.login(userLoginDTO)) {
             return Response.builder()
                     .code(Constants.ResponseCode.SUCCESS.getCode())
                     .info(Constants.ResponseCode.SUCCESS.getMsg())
@@ -33,16 +33,11 @@ public class AccountController {
     }
 
     @GetMapping("register")
-    public Response<Object> register(@RequestBody UserRegisterDTO userRegisterDTO) throws Exception{
-        if(userService.register(userRegisterDTO)){
-            return Response.builder()
-                    .code(Constants.ResponseCode.SUCCESS.getCode())
-                    .info(Constants.ResponseCode.SUCCESS.getMsg())
-                    .build();
-        }
+    public Response<Object> register(@RequestBody UserRegisterDTO userRegisterDTO) throws Exception {
         return Response.builder()
-                .code(Constants.ResponseCode.UN_ERROR.getCode())
-                .info(Constants.ResponseCode.UN_ERROR.getMsg())
+                .code(Constants.ResponseCode.SUCCESS.getCode())
+                .info(Constants.ResponseCode.SUCCESS.getMsg())
+                .data(userService.register(userRegisterDTO))
                 .build();
     }
 

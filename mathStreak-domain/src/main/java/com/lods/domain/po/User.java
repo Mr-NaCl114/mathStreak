@@ -18,8 +18,8 @@ public class User {
     private String nickname;
     private String password;
     private Integer exp;
-    private String TotalResponse;
-    private String RightResponse;
+    private Integer totalResponse;
+    private Integer rightResponse;
     private Date updateTime;
     private Date createTime;
 }

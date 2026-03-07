@@ -67,4 +67,26 @@ public class Constants {
 
         private final String value;
     }
+
+    @AllArgsConstructor
+    @Getter
+    public enum UserRegisterInfo {
+        EXP(0, "经验值"),
+        RIGHT_RESPONSE(0, "正确率"),
+        TOTAL_RESPONSE(0, "总题数");
+
+        private final int code;
+        private final String message;
+    }
+
+    @AllArgsConstructor
+    @Getter
+    public enum UserRegisterStatus {
+        SUCCESS(0, "注册成功"),
+        USERNAME_EXISTS(1, "用户名已存在"),
+        FAILURE(2, "注册失败");
+
+        private final int code;
+        private final String message;
+    }
 }

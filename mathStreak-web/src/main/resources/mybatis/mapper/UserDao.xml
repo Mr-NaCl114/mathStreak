@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lods.dao.UserDao">
+    <resultMap id="UserMap" type="com.lods.domain.po.User">
+        <id column="id" property="id"/>
+        <result column="account" property="account"/>
+        <result column="nick_name" property="nickname"/>
+        <result column="password" property="password"/>
+        <result column="exp" property="exp"/>
+        <result column="total_responses" property="totalResponse"/>
+        <result column="right_responses" property="rightResponse"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="create_time" property="createTime"/>
+
+    </resultMap>
+
+    <insert id="userRegister" parameterType="com.lods.domain.po.User">
+        insert into user_info(account, nick_name, password, exp, total_responses, right_responses, create_time, update_time)
+        values(#{account}, #{nickname}, #{password}, #{exp}, #{totalResponse}, #{rightResponse}, now(), now())
+    </insert>
+
+    <select id="QueryUserByAccount" resultType="int">
+        select count(*) from user_info where account = #{account}
+    </select>
+</mapper>
