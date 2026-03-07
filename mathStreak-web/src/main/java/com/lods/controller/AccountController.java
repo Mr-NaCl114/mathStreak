@@ -20,19 +20,14 @@ public class AccountController {
 
     @PostMapping("login")
     public Response<Object> login(@RequestBody UserLoginDTO userLoginDTO) throws Exception {
-        if (userService.login(userLoginDTO)) {
-            return Response.builder()
-                    .code(Constants.ResponseCode.SUCCESS.getCode())
-                    .info(Constants.ResponseCode.SUCCESS.getMsg())
-                    .build();
-        }
         return Response.builder()
-                .code(Constants.ResponseCode.UN_ERROR.getCode())
-                .info(Constants.ResponseCode.UN_ERROR.getMsg())
+                .code(Constants.ResponseCode.SUCCESS.getCode())
+                .info(Constants.ResponseCode.SUCCESS.getMsg())
+                .data(userService.login(userLoginDTO))
                 .build();
     }
 
-    @GetMapping("register")
+    @PostMapping("register")
     public Response<Object> register(@RequestBody UserRegisterDTO userRegisterDTO) throws Exception {
         return Response.builder()
                 .code(Constants.ResponseCode.SUCCESS.getCode())

@@ -5,7 +5,7 @@ import com.lods.domain.dto.UserRegisterDTO;
 import com.lods.domain.res.UserRegOrLoginRes;
 
 public interface UserService {
-    boolean login(UserLoginDTO userLoginDTO);
+    UserRegOrLoginRes login(UserLoginDTO userLoginDTO);
 
     UserRegOrLoginRes register(UserRegisterDTO userRegisterDTO);
 }

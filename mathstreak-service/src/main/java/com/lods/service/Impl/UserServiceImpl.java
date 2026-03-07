@@ -22,8 +22,9 @@ public class UserServiceImpl implements UserService {
     private UserDao userDao;
 
     @Override
-    public boolean login(UserLoginDTO userLoginDTO) {
-        return true;
+    public UserRegOrLoginRes login(UserLoginDTO userLoginDTO) {
+
+
     }
 
     @Override
