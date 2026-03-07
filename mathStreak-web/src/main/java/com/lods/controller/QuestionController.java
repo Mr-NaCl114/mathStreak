@@ -25,7 +25,7 @@ public class QuestionController {
 
     @GetMapping("current-question")
     public Response<Object> currentQuestion() throws Exception{
-        lodsWebSocketHandler.sendMessage(statusService.updateStatus());
+//        lodsWebSocketHandler.sendMessage(statusService.updateStatus());
         return Response.builder()
                 .code(Constants.ResponseCode.SUCCESS.getCode())
                 .info(Constants.ResponseCode.SUCCESS.getMsg())
