@@ -8,9 +8,9 @@ services:
     environment:
       TZ: Asia/Shanghai
       MYSQL_ROOT_PASSWORD: 7891919
-      MYSQL_DATABASE: mathstreak/home/ubuntu/work/IDEA/mathStreak-mvc/mathStreak-web/src/main/resources/temp/mysql
+      MYSQL_DATABASE: mathstreak
       MYSQL_USER: math
-      MYSQL_PASSWORD: password    # 请确保这里设置的密码与应用配置一致
+      MYSQL_PASSWORD: 7891919    # 请确保这里设置的密码与应用配置一致
     ports:
       - "3308:3306"
     volumes:
@@ -69,8 +69,8 @@ services:
       - SERVER_PORT=10001
       # 覆盖 application.yml 中的配置，使用 docker 网络中的服务名
       - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/mathstreak?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true
-      - SPRING_DATASOURCE_USERNAME=math
-      - SPRING_DATASOURCE_PASSWORD=password
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=7891919
       - SPRING_DATA_REDIS_HOST=redis
       - SPRING_DATA_REDIS_PORT=6379
       - SPRING_DATA_REDIS_PASSWORD=114514
