@@ -1,0 +1,102 @@
+package com.lods.app.service.impl;
+
+import com.lods.types.common.constants.Constants;
+import com.lods.infrastructure.dao.GapQuestionDao;
+import com.lods.infrastructure.dao.ChoiceQuestionDao;
+import com.lods.api.dto.SubmitDTO;
+import com.lods.domain.model.entity.Question;
+import com.lods.api.response.CheckRes;
+import com.lods.api.response.GameStateRes;
+import com.lods.api.response.QuestionRes;
+import com.lods.types.common.util.ParseInt;
+import com.lods.domain.service.QuestionService;
+import jakarta.annotation.Resource;
+import lombok.extern.slf4j.Slf4j;
+import org.matheclipse.core.eval.ExprEvaluator;
+import org.matheclipse.core.interfaces.IExpr;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.stereotype.Service;
+
+import java.util.concurrent.ThreadLocalRandom;
+
+@Slf4j
+@Service
+public class QuestionServiceImpl implements QuestionService {
+
+    @Resource
+    private StringRedisTemplate stringRedisTemplate;
+    @Resource
+    private ChoiceQuestionDao choiceQuestionDao;
+    @Resource
+    private GapQuestionDao gapQuestionDao;
+    @Resource
+    private StreakCount streakCount;
+
+    @Override
+    public QuestionRes getQuestion() throws Exception {
+
+        Question questions = new Question();
+
+        Constants.TypeOfQuestion[] values = Constants.TypeOfQuestion.values();
+        Constants.TypeOfQuestion randomChoice = values[ThreadLocalRandom.current().nextInt(values.length)];
+        if (randomChoice == Constants.TypeOfQuestion.CHOICE) {
+            Integer total = choiceQuestionDao.getTotal().getTotal();
+            int random = ThreadLocalRandom.current().nextInt(total + 1);
+            questions = choiceQuestionDao.getQuestions(random);
+            log.info("当前总计选择题： {} ，抽取 选择题 题号： {}", total, random);
+        } else if (randomChoice == Constants.TypeOfQuestion.GAP) {
+            Integer total = gapQuestionDao.getTotal().getTotal();
+            int random = ThreadLocalRandom.current().nextInt(total + 1);
+            questions = gapQuestionDao.getQuestions(random);
+            log.info("当前总计填空题： {} ，抽取 填空题 题号： {}", total, random);
+        }
+
+
+        return QuestionRes.builder()
+                .type(questions.getOptA() == null ? Constants.TypeOfQuestion.GAP.getCode() : Constants.TypeOfQuestion.CHOICE.getCode())
+                .questionId(questions.getQuestionId())
+                .description(questions.getDescription())
+                .optA(questions.getOptA())
+                .optB(questions.getOptB())
+                .optC(questions.getOptC())
+                .optD(questions.getOptD())
+                .difficultyLevel(questions.getDifficultyLevel())
+                .build();
+    }
+
+    @Override
+    public CheckRes submit(SubmitDTO submitDTO) {
+        // 选择题
+        if (submitDTO.getType().equals(Constants.TypeOfQuestion.CHOICE.getCode())) {
+            Question questions = choiceQuestionDao.getQuestions(submitDTO.getQuestionId());
+
+            return CheckRes.builder()
+                    .correct(streakCount.isCorrect(questions.getAnswer().equals(submitDTO.getAnswerContent())))
+                    .correctLatexAnswer(questions.getAnswer())
+                    .build();
+        }
+
+        // 填空题
+        Question questions = gapQuestionDao.getQuestions(submitDTO.getQuestionId());
+        try {
+            ExprEvaluator util = new ExprEvaluator();
+            // 构造表达式：(标准答案) - (用户答案)
+            String checkExpr = "(" + questions.getAnswer() + ") - (" + submitDTO.getAnswerContent() + ")";
+            // 让引擎化简
+            IExpr result = util.eval("Simplify(" + checkExpr + ")");
+            // 如果化简结果等于 0，说明等价
+            log.info("result: {}，is?: {}", result, result.isZERO());
+
+
+            return CheckRes.builder()
+                    .correct(streakCount.isCorrect(result.isZERO()))
+                    .correctLatexAnswer(questions.getAnswer())
+                    .build();
+        } catch (Exception e) {
+            return CheckRes.builder()
+                    .correct(streakCount.isCorrect(submitDTO.getAnswerContent().equals(questions.getAnswer())))
+                    .correctLatexAnswer(questions.getAnswer())
+                    .build();
+        }
+    }
+}

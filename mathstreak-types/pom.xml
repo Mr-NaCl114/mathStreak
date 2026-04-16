@@ -3,9 +3,6 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent><groupId>com.lods</groupId><artifactId>mathStreak-ddd</artifactId><version>${revision}</version></parent>
-    <artifactId>mathstreak-domain</artifactId>
-    <dependencies>
-        <dependency><groupId>com.lods</groupId><artifactId>mathstreak-api</artifactId><version>${revision}</version></dependency>
-        <dependency><groupId>org.projectlombok</groupId><artifactId>lombok</artifactId></dependency>
-    </dependencies>
+    <artifactId>mathstreak-types</artifactId>
+    <dependencies><dependency><groupId>org.projectlombok</groupId><artifactId>lombok</artifactId></dependency></dependencies>
 </project>
