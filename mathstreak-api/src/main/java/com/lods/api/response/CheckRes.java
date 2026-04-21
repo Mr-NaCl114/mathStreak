@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CheckRes {
     // 是否正确
-    private Integer correct;
+    private Boolean isCorrect;
 
     // 当前正确的全局连胜数
 //    private Long globalStreak;

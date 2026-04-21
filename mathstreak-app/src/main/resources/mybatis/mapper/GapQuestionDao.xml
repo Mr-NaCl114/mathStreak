@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.lods.infrastructure.dao.GapQuestionDao">
+<mapper namespace="com.lods.infrastructure.dao.IQuestionGapDao">
 
-    <resultMap id="GapQuestionMap" type="com.lods.domain.model.entity.Question">
+    <resultMap id="GapQuestionMap" type="com.lods.infrastructure.dao.po.Question">
         <id column="id" property="questionId"/>
         <result column="question" property="description"/>
         <result column="answer" property="answer"/>
@@ -11,11 +11,15 @@
 
     </resultMap>
 
-    <select id="getQuestions" resultMap="GapQuestionMap">
+    <select id="getCurrentQuestion" resultMap="GapQuestionMap">
         select * from gap where id = #{ramId}
     </select>
 
     <select id="getTotal" resultMap="GapQuestionMap">
         select count(*) AS total_rows FROM gap;
+    </select>
+
+    <select id="queryQuestionById" resultMap="GapQuestionMap">
+        select * from gap where id = #{questionId}
     </select>
 </mapper>

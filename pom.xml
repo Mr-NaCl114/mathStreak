@@ -26,7 +26,7 @@
 
     <properties>
         <revision>1.0.1</revision>
-        <java.version>21</java.version>
+        <java.version>25</java.version>
         <mybatis.version>4.0.1</mybatis.version>
         <matheclipse.version>3.1.1</matheclipse.version>
         <lombok.version>1.18.42</lombok.version>
@@ -38,12 +38,38 @@
 
     <dependencyManagement>
         <dependencies>
-            <dependency><groupId>org.springframework.security</groupId><artifactId>spring-security-crypto</artifactId><version>${spring-security-crypto.version}</version></dependency>
-            <dependency><groupId>org.mybatis.spring.boot</groupId><artifactId>mybatis-spring-boot-starter</artifactId><version>${mybatis.version}</version></dependency>
-            <dependency><groupId>com.mysql</groupId><artifactId>mysql-connector-j</artifactId><version>${mysql-connector-j.version}</version><scope>runtime</scope></dependency>
-            <dependency><groupId>org.matheclipse</groupId><artifactId>matheclipse-core</artifactId><version>${matheclipse.version}</version></dependency>
-            <dependency><groupId>org.matheclipse</groupId><artifactId>matheclipse-gpl</artifactId><version>${matheclipse.version}</version></dependency>
-            <dependency><groupId>org.projectlombok</groupId><artifactId>lombok</artifactId><version>${lombok.version}</version><scope>provided</scope></dependency>
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-crypto</artifactId>
+                <version>${spring-security-crypto.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mybatis.spring.boot</groupId>
+                <artifactId>mybatis-spring-boot-starter</artifactId>
+                <version>${mybatis.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.mysql</groupId>
+                <artifactId>mysql-connector-j</artifactId>
+                <version>${mysql-connector-j.version}</version>
+                <scope>runtime</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.matheclipse</groupId>
+                <artifactId>matheclipse-core</artifactId>
+                <version>${matheclipse.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.matheclipse</groupId>
+                <artifactId>matheclipse-gpl</artifactId>
+                <version>${matheclipse.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${lombok.version}</version>
+                <scope>provided</scope>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 </project>

@@ -2,10 +2,42 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <parent><groupId>com.lods</groupId><artifactId>mathStreak-ddd</artifactId><version>${revision}</version></parent>
+    <parent>
+        <groupId>com.lods</groupId>
+        <artifactId>mathStreak-ddd</artifactId>
+        <version>${revision}</version>
+    </parent>
     <artifactId>mathstreak-domain</artifactId>
     <dependencies>
-        <dependency><groupId>com.lods</groupId><artifactId>mathstreak-api</artifactId><version>${revision}</version></dependency>
-        <dependency><groupId>org.projectlombok</groupId><artifactId>lombok</artifactId></dependency>
+        <dependency>
+            <groupId>com.lods</groupId>
+            <artifactId>mathstreak-api</artifactId>
+            <version>${revision}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.lods</groupId>
+            <artifactId>mathstreak-types</artifactId>
+            <version>${revision}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.matheclipse</groupId>
+            <artifactId>matheclipse-core</artifactId>
+            <version>${matheclipse.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.matheclipse</groupId>
+            <artifactId>matheclipse-gpl</artifactId>
+            <version>${matheclipse.version}</version>
+        </dependency>
     </dependencies>
 </project>
