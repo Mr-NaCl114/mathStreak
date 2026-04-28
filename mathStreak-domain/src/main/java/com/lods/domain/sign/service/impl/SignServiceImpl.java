@@ -12,6 +12,7 @@ import java.util.Map;
 public class SignServiceImpl implements ISignService {
     @Override
     public String signBuild(Map<String, String> params) {
+        log.info("sign构建，字段: {}", params);
         return SignBuild.generateSign(params);
     }
 }

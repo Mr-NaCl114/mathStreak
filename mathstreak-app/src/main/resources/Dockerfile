@@ -1,5 +1,5 @@
 # 基础镜像 (根据 pom.xml 中的 java.version=21 选择 JDK 21 的运行时镜像)
-FROM eclipse-temurin:21-jre
+FROM eclipse-temurin:25-jre
 
 # 配置环境变量
 ENV PARAMS=""

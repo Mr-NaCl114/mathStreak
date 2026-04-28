@@ -56,17 +56,28 @@ public class QuestionServiceImpl implements IQuestionService {
 
         // 填空题
         QuestionVO questions = questionRepository.getQuestionGapById(questionSubmitEntity.getQuestionId());
-        try {
-            ExprEvaluator util = new ExprEvaluator();
-            // 构造表达式：(标准答案) - (用户答案)
-            String checkExpr = "(" + questions.getAnswer() + ") - (" + questionSubmitEntity.getAnswerContent() + ")";
-            // 让引擎化简
-            IExpr result = util.eval("Simplify(" + checkExpr + ")");
-            // 如果化简结果等于 0，说明等价
-            log.info("result: {}，is?: {}", result, result.isZERO());
+        boolean res = false;
 
-            boolean res = result.isZERO();
-            //  更新状态
+        // 1. 优先进行字符串完全匹配（处理类似(4,4)无法被ExprEvaluator解析的情况）
+        if (questions.getAnswer() != null && questionSubmitEntity.getAnswerContent() != null &&
+            questions.getAnswer().trim().equals(questionSubmitEntity.getAnswerContent().trim())) {
+            res = true;
+        } else {
+            // 2. 如果字符串不完全匹配，尝试进行数学表达式等价性判定
+            try {
+                ExprEvaluator util = new ExprEvaluator();
+                String checkExpr = "(" + questions.getAnswer() + ") - (" + questionSubmitEntity.getAnswerContent() + ")";
+                IExpr result = util.eval("Simplify(" + checkExpr + ")");
+                log.info("result: {}，is?: {}", result, result.isZERO());
+                res = result.isZERO();
+            } catch (Exception e) {
+                log.warn("表达式解析或化简失败: 标准答案={}, 用户答案={}", questions.getAnswer(), questionSubmitEntity.getAnswerContent(), e);
+                // 解析失败且字符串不匹配，则判定为错误
+            }
+        }
+
+        try {
+            // 更新状态
             questionRepository.updateStreakCountByIsCorrect(res);
 
             return QuestionCorrectEntity.builder()

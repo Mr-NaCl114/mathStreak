@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>4.0.2</version>
+        <version>4.0.5</version>
         <relativePath/>
     </parent>
 
@@ -25,13 +25,13 @@
     </modules>
 
     <properties>
-        <revision>1.0.1</revision>
+        <revision>1.1.1</revision>
         <java.version>25</java.version>
         <mybatis.version>4.0.1</mybatis.version>
         <matheclipse.version>3.1.1</matheclipse.version>
-        <lombok.version>1.18.42</lombok.version>
+        <lombok.version>1.18.44</lombok.version>
         <mysql-connector-j.version>9.6.0</mysql-connector-j.version>
-        <spring-security-crypto.version>7.1.0-M2</spring-security-crypto.version>
+        <spring-security-crypto.version>7.0.4</spring-security-crypto.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
     </properties>
@@ -72,4 +72,26 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.15.0</version> <!-- 或使用适合你项目的最新版本 -->
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                    <!-- 配置 lombok 注解处理器 -->
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>${lombok.version}</version>
+                        </path>
+                    </annotationProcessorPaths>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>

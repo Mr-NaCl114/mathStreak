@@ -1,6 +1,7 @@
 package com.lods.trigger.http;
 
 import com.lods.api.response.Response;
+import com.lods.api.response.SignRes;
 import com.lods.domain.sign.service.ISignService;
 import com.lods.types.common.constants.Constants;
 import jakarta.annotation.Resource;
@@ -35,7 +36,9 @@ public class SignController implements com.lods.api.SignController {
         return Response.builder()
                 .code(Constants.ResponseCode.SUCCESS.getCode())
                 .info(Constants.ResponseCode.SUCCESS.getMsg())
-                .data(signService.signBuild(stringMap))
+                .data(SignRes.builder()
+                        .sign(signService.signBuild(stringMap))
+                        .build())
                 .build();
     }
 }

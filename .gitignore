@@ -31,3 +31,6 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Custom Inclusions/Exclusions ###
+mathstreak-types/src/main/java/com/lods/types/common/util/SignBuild.java
