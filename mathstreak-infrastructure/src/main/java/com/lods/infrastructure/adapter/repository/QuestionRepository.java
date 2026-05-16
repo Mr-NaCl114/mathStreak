@@ -35,12 +35,12 @@ public class QuestionRepository implements IQuestionRepository {
 
         if (randomChoice == Constants.TypeOfQuestion.CHOICE) {
             Integer total = choiceQuestionDao.getTotal().getTotal();
-            int random = ThreadLocalRandom.current().nextInt(total + 1);
+            int random = ThreadLocalRandom.current().nextInt(1, total + 1);
             question = choiceQuestionDao.getCurrentQuestion(random);
             log.info("当前总计选择题： {} ，抽取 选择题 题号： {}", total, random);
         } else if (randomChoice == Constants.TypeOfQuestion.GAP) {
             Integer total = gapQuestionDao.getTotal().getTotal();
-            int random = ThreadLocalRandom.current().nextInt(total + 1);
+            int random = ThreadLocalRandom.current().nextInt(1, total + 1);
             question = gapQuestionDao.getCurrentQuestion(random);
             log.info("当前总计填空题： {} ，抽取 填空题 题号： {}", total, random);
         }

@@ -40,6 +40,8 @@ public class QuestionServiceImpl implements IQuestionService {
 
     @Override
     public QuestionCorrectEntity submit(QuestionSubmitEntity questionSubmitEntity) {
+
+        log.info("上传为 {},提交的答案： {}", questionSubmitEntity.getType(), questionSubmitEntity.getAnswerContent());
         // 选择题
         if (questionSubmitEntity.getType().equals(Constants.TypeOfQuestion.CHOICE.getCode())) {
             QuestionVO questionVO = questionRepository.getQuestionChoiceById(questionSubmitEntity.getQuestionId());
@@ -60,7 +62,7 @@ public class QuestionServiceImpl implements IQuestionService {
 
         // 1. 优先进行字符串完全匹配（处理类似(4,4)无法被ExprEvaluator解析的情况）
         if (questions.getAnswer() != null && questionSubmitEntity.getAnswerContent() != null &&
-            questions.getAnswer().trim().equals(questionSubmitEntity.getAnswerContent().trim())) {
+                questions.getAnswer().trim().equals(questionSubmitEntity.getAnswerContent().trim())) {
             res = true;
         } else {
             // 2. 如果字符串不完全匹配，尝试进行数学表达式等价性判定
@@ -71,7 +73,7 @@ public class QuestionServiceImpl implements IQuestionService {
                 log.info("result: {}，is?: {}", result, result.isZERO());
                 res = result.isZERO();
             } catch (Exception e) {
-                log.warn("表达式解析或化简失败: 标准答案={}, 用户答案={}", questions.getAnswer(), questionSubmitEntity.getAnswerContent(), e);
+                log.info("表达式解析或化简失败: 标准答案={}, 用户答案={}", questions.getAnswer(), questionSubmitEntity.getAnswerContent(), e);
                 // 解析失败且字符串不匹配，则判定为错误
             }
         }
