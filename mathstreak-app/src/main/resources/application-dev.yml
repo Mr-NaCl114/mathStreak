@@ -41,7 +41,7 @@ spring:
   ai:
     openai:
       base-url: https://api.deepseek.com/
-      api-key: sk-86c4e9e32ec24f6485d21ed15090ed50
+      api-key:
 
   data:
     redis:
