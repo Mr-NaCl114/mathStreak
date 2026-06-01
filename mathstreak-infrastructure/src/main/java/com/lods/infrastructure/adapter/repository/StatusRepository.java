@@ -1,15 +1,11 @@
 package com.lods.infrastructure.adapter.repository;
 
-import com.lods.api.response.GameStateRes;
 import com.lods.domain.status.apadter.repository.IStatusRepository;
 import com.lods.domain.status.model.valobj.GameStatusVO;
 import com.lods.infrastructure.dao.po.GameStatus;
 import com.lods.infrastructure.redis.StatusUpdate;
-import com.lods.types.common.constants.Constants;
-import com.lods.types.common.util.ParseInt;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Repository;
 
 @Slf4j

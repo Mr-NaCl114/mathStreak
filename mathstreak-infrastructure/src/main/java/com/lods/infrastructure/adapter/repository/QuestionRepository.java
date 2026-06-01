@@ -1,7 +1,6 @@
 package com.lods.infrastructure.adapter.repository;
 
 import com.lods.domain.question.adapter.repository.IQuestionRepository;
-import com.lods.domain.question.model.entity.QuestionDescriptionEntity;
 import com.lods.domain.question.model.valobj.QuestionVO;
 import com.lods.infrastructure.dao.IQuestionChoiceDao;
 import com.lods.infrastructure.dao.IQuestionGapDao;

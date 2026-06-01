@@ -1,17 +1,17 @@
 package com.lods.trigger.http;
 
 import com.lods.api.IQuestionController;
+import com.lods.api.dto.SubmitDTO;
 import com.lods.api.response.CheckRes;
 import com.lods.api.response.QuestionRes;
+import com.lods.api.response.Response;
 import com.lods.domain.question.model.entity.QuestionCorrectEntity;
 import com.lods.domain.question.model.entity.QuestionDataResEntity;
 import com.lods.domain.question.model.entity.QuestionSubmitEntity;
-import com.lods.types.common.constants.Constants;
-import com.lods.api.response.Response;
-import com.lods.api.dto.SubmitDTO;
-import com.lods.trigger.listener.LodsWebSocketHandler;
 import com.lods.domain.question.service.IQuestionService;
 import com.lods.domain.status.service.IStatusService;
+import com.lods.trigger.listener.LodsWebSocketHandler;
+import com.lods.types.common.constants.Constants;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;

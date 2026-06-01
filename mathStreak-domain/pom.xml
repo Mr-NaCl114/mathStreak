@@ -32,12 +32,12 @@
         <dependency>
             <groupId>org.matheclipse</groupId>
             <artifactId>matheclipse-core</artifactId>
-            <version>${matheclipse.version}</version>
+            <version>3.2.0</version>
         </dependency>
         <dependency>
             <groupId>org.matheclipse</groupId>
             <artifactId>matheclipse-gpl</artifactId>
-            <version>${matheclipse.version}</version>
+            <version>3.2.0</version>
         </dependency>
     </dependencies>
 </project>
