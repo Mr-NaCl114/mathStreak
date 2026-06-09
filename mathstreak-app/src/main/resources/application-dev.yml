@@ -10,9 +10,9 @@ server:
 spring:
   datasource:
     mysql:
-      username: math
-      password: 7891919
-      url: jdbc:mysql://127.0.0.1:3308/mathstreak?useUnicode=true&characterEncoding=utf8&autoReconnect=true&zeroDateTimeBehavior=convertToNull&serverTimezone=Asia/Shanghai&useSSL=true
+      username: root
+      password: 114514
+      url: jdbc:mysql://127.0.0.1:3306/mathstreak?useUnicode=true&characterEncoding=utf8&autoReconnect=true&zeroDateTimeBehavior=convertToNull&serverTimezone=Asia/Shanghai&useSSL=true
       driver-class-name: com.mysql.cj.jdbc.Driver
       initialSize: 5
       minIdle: 5
@@ -41,12 +41,15 @@ spring:
   ai:
     openai:
       base-url: https://api.deepseek.com/
-      api-key:
+      api-key: sk-02b89b9a13c8424a9daa8dc20b8fe4fa
+      timeout: 120000
+      chat:
+        model: deepseek-v4-flash
 
   data:
     redis:
-      host: 127.0.0.1
-      port: 6380
+      host: 193.112.94.229
+      port: 6379
       password: 114514
       database: 1
 

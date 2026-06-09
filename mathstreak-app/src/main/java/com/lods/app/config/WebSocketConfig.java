@@ -1,4 +1,4 @@
-package com.lods.trigger.config;
+package com.lods.app.config;
 
 import com.lods.trigger.listener.LodsWebSocketHandler;
 import jakarta.annotation.Resource;
