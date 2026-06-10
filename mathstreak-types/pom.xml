@@ -9,6 +9,8 @@
     </parent>
     <artifactId>mathstreak-types</artifactId>
     <dependencies>
+
+<!--        其余依赖-->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>

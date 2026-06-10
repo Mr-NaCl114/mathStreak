@@ -9,6 +9,8 @@
     </parent>
     <artifactId>mathstreak-domain</artifactId>
     <dependencies>
+
+<!--        项目依赖-->
         <dependency>
             <groupId>com.lods</groupId>
             <artifactId>mathstreak-api</artifactId>
@@ -20,15 +22,13 @@
             <version>${revision}</version>
         </dependency>
 
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-        </dependency>
+<!--        springboot-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
+<!--        数学计算依赖-->
         <dependency>
             <groupId>org.matheclipse</groupId>
             <artifactId>matheclipse-core</artifactId>
@@ -40,6 +40,7 @@
             <version>3.2.0</version>
         </dependency>
 
+<!--        spring AI-->
         <dependency>
             <groupId>org.springframework.ai</groupId>
             <artifactId>spring-ai-starter-model-openai</artifactId>
@@ -59,6 +60,12 @@
         <dependency>
             <groupId>org.springframework.ai</groupId>
             <artifactId>spring-ai-tika-document-reader</artifactId>
+        </dependency>
+
+<!--        其余依赖-->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
         </dependency>
     </dependencies>
 </project>

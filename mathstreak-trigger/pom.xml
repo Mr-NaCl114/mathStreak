@@ -9,6 +9,8 @@
     </parent>
     <artifactId>mathstreak-trigger</artifactId>
     <dependencies>
+
+<!--        项目依赖-->
         <dependency>
             <groupId>com.lods</groupId>
             <artifactId>mathstreak-types</artifactId>
@@ -25,6 +27,7 @@
             <version>${revision}</version>
         </dependency>
 
+<!--        springboot-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -33,6 +36,8 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-websocket</artifactId>
         </dependency>
+
+<!--        其余依赖-->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
