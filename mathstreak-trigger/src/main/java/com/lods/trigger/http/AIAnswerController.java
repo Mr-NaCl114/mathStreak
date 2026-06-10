@@ -3,10 +3,11 @@ package com.lods.trigger.http;
 import com.lods.api.dto.AIAnswerReqInfo;
 import com.lods.api.response.AIAnswerMsgRes;
 import com.lods.api.response.Response;
+import com.lods.domain.answer.model.entity.AIAnswerGetQuestionReqEntity;
 import com.lods.domain.answer.model.entity.AIAnswerMsgEntity;
-import com.lods.domain.answer.model.entity.AIAnswerReqEntity;
 import com.lods.domain.answer.service.IAIAnswerService;
 import com.lods.types.common.constants.Constants;
+import com.lods.types.common.exception.AppException;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -20,10 +21,10 @@ public class AIAnswerController {
     @Resource
     private IAIAnswerService IAIAnswerService;
 
-    @RequestMapping(value = "new_generate", method = RequestMethod.POST)
-    public Response<AIAnswerMsgRes> newGenerate(@RequestBody AIAnswerReqInfo info) throws Exception {
+    @RequestMapping(value = "generate", method = RequestMethod.POST)
+    public Response<AIAnswerMsgRes> Generate(@RequestBody AIAnswerReqInfo info) throws Exception {
 
-        AIAnswerMsgEntity entity = IAIAnswerService.newGenerate(AIAnswerReqEntity.builder()
+        AIAnswerMsgEntity entity = IAIAnswerService.Generate(AIAnswerGetQuestionReqEntity.builder()
                 .type(info.getType())
                 .questionId(info.getQuestionId())
                 .build());
@@ -34,6 +35,22 @@ public class AIAnswerController {
                 .data(AIAnswerMsgRes.builder()
                         .msg(entity.getMsg())
                         .build())
+                .build();
+    }
+
+    @RequestMapping(value = "new_generate", method = RequestMethod.POST)
+    public Response<AIAnswerMsgRes> newGenerate() throws Exception {
+
+        try{
+            IAIAnswerService.newGenerateForAll();
+        } catch (Exception e) {
+            throw new AppException(e.getMessage(),e.getMessage());
+        }
+
+        return Response.<AIAnswerMsgRes>builder()
+                .code(Constants.ResponseCode.SUCCESS.getCode())
+                .info(Constants.ResponseCode.SUCCESS.getMsg())
+                .data(null)
                 .build();
     }
 }

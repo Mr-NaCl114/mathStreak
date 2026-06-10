@@ -11,5 +11,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class AIAnswerGetQuestionReqEntity {
 
-    private String id;
+    private Integer type;
+    private Integer questionId;
 }

@@ -9,8 +9,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class AIAnswerReqEntity {
+public class AIAnswerInsertEntity {
 
-    private Integer type;
     private Integer questionId;
+    private String aiAnswer;
 }

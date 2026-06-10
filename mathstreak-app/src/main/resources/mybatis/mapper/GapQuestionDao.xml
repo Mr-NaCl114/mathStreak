@@ -8,6 +8,7 @@
         <result column="answer" property="answer"/>
         <result column="diff" property="difficultyLevel"/>
         <result column="total_rows" property="total"/>
+        <result column="ai_answer" property="aiAnswer"/>
 
     </resultMap>
 
@@ -21,5 +22,26 @@
 
     <select id="queryQuestionById" resultMap="GapQuestionMap">
         select * from gap where id = #{questionId}
+    </select>
+
+    <select id="getRangeQuestion" resultMap="GapQuestionMap">
+        select * from gap limit #{pageSize} offset #{offset}
+    </select>
+
+    <update id="batchUpdateAIAnswer" parameterType="java.util.List">
+        update gap
+        <trim prefix="set ai_answer = case id" suffix="end">
+            <foreach collection="list" item="item">
+                when #{item.questionId} then #{item.aiAnswer}
+            </foreach>
+        </trim>
+        where id in
+        <foreach collection="list" item="item" open="(" close=")" separator=",">
+            #{item.questionId}
+        </foreach>
+    </update>
+
+    <select id="getAnswerByQuestionId" resultType="java.lang.String">
+        select ai_answer from gap where id = #{questionId}
     </select>
 </mapper>
