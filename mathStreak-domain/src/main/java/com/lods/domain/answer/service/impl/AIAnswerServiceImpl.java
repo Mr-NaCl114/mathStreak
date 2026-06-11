@@ -18,9 +18,14 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import jakarta.annotation.PostConstruct;
+import jakarta.annotation.PreDestroy;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 @Slf4j
 @Service
@@ -34,9 +39,11 @@ public class AIAnswerServiceImpl implements IAIAnswerService {
     private IAIAnswerRepository aiAnswerRepository;
 
     private ChatClient chatClient;
+    private ExecutorService aiExecutor;
 
     @PostConstruct
     public void init() {
+        aiExecutor = Executors.newFixedThreadPool(Math.min(10, Runtime.getRuntime().availableProcessors()));
         chatClient = chatClientBuilder
                 .defaultSystem("""
                          	 你是一个能够解决和解析各个阶段、各种类型数学或逻辑题目的解题讲解员，只能且唯一能够做的事是专注于题目和解题本身，除了和解题过程相关不能有其他无效输出。
@@ -59,6 +66,13 @@ public class AIAnswerServiceImpl implements IAIAnswerService {
                         ).build()
                 )
                 .build();
+    }
+
+    @PreDestroy
+    public void destroy() {
+        if (aiExecutor != null) {
+            aiExecutor.shutdown();
+        }
     }
 
     @Override
@@ -88,7 +102,7 @@ public class AIAnswerServiceImpl implements IAIAnswerService {
         log.info("调用模型新生成题目解析 {}", aiAnswerGetQuestionReqEntity);
         return AIAnswerMsgEntity.builder()
                 .msg(chatClient.prompt(question)
-                        .advisors(a -> a.param(ChatMemory.CONVERSATION_ID, "test-conversation"))
+                        .advisors(a -> a.param(ChatMemory.CONVERSATION_ID, UUID.randomUUID().toString()))
                         .call().content()).build();
     }
 
@@ -102,31 +116,39 @@ public class AIAnswerServiceImpl implements IAIAnswerService {
         // 选择题
         int choiceTotal = aiAnswerRepository.countChoiceQuestions();
         for (int offset = 0; offset < choiceTotal; offset += PAGE_SIZE) {
-            for (QuestionVO q : aiAnswerRepository.getChoiceQuestions(offset, PAGE_SIZE)) {
-                StringBuilder sb = new StringBuilder();
-                sb.append(q.getDescription()).append("\n\n");
-                if (q.getOptA() != null && !q.getOptA().isEmpty()) {
-                    sb.append("A：").append(q.getOptA()).append("\n");
-                    sb.append("B：").append(q.getOptB()).append("\n");
-                    sb.append("C：").append(q.getOptC()).append("\n");
-                    sb.append("D：").append(q.getOptD()).append("\n\n");
-                }
-                sb.append("正确答案：").append(q.getAnswer());
+            List<QuestionVO> questions = aiAnswerRepository.getChoiceQuestions(offset, PAGE_SIZE);
+            // 每页题目并行调用AI，每个线程使用独立的conversationId避免ChatMemory污染
+            List<CompletableFuture<AIAnswerInsertEntity>> futures = new ArrayList<>(questions.size());
+            for (QuestionVO q : questions) {
+                futures.add(CompletableFuture.supplyAsync(() -> {
+                    StringBuilder sb = new StringBuilder();
+                    sb.append(q.getDescription()).append("\n\n");
+                    if (q.getOptA() != null && !q.getOptA().isEmpty()) {
+                        sb.append("A：").append(q.getOptA()).append("\n");
+                        sb.append("B：").append(q.getOptB()).append("\n");
+                        sb.append("C：").append(q.getOptC()).append("\n");
+                        sb.append("D：").append(q.getOptD()).append("\n\n");
+                    }
+                    sb.append("正确答案：").append(q.getAnswer());
 
-                String aiResult = chatClient.prompt(sb.toString())
-                        .advisors(a -> a.param(ChatMemory.CONVERSATION_ID, "test-conversation"))
-                        .call().content();
-                writeBuffer.add(AIAnswerInsertEntity.builder()
-                        .questionId(q.getQuestionId())
-                        .aiAnswer(aiResult)
-                        .build());
-
-                log.info("生成AI解析 type=选择题 questionId={}，当前writeBuffer大小：{}", q.getQuestionId(), writeBuffer.size());
+                    String aiResult = chatClient.prompt(sb.toString())
+                            .advisors(a -> a.param(ChatMemory.CONVERSATION_ID, UUID.randomUUID().toString()))
+                            .call().content();
+                    return AIAnswerInsertEntity.builder()
+                            .questionId(q.getQuestionId())
+                            .aiAnswer(aiResult)
+                            .build();
+                }, aiExecutor));
+            }
+            // 在主线程收集结果，写入writeBuffer，保持原有刷写逻辑
+            for (CompletableFuture<AIAnswerInsertEntity> future : futures) {
+                AIAnswerInsertEntity entity = future.join();
+                writeBuffer.add(entity);
+                log.info("生成AI解析 type=选择题 questionId={}，当前writeBuffer大小：{}", entity.getQuestionId(), writeBuffer.size());
                 if (writeBuffer.size() % BATCH_SIZE >= BATCH_SIZE - 1) {
                     aiAnswerRepository.choiceBatchUpdateAIAnswer(writeBuffer);
                     log.info("写入字符串");
                     writeBuffer.clear();
-
                 }
             }
         }
@@ -140,20 +162,29 @@ public class AIAnswerServiceImpl implements IAIAnswerService {
         // 填空题
         int gapTotal = aiAnswerRepository.countGapQuestions();
         for (int offset = 0; offset < gapTotal; offset += PAGE_SIZE) {
-            for (QuestionVO q : aiAnswerRepository.getGapQuestions(offset, PAGE_SIZE)) {
-                StringBuilder sb = new StringBuilder();
-                sb.append(q.getDescription()).append("\n\n");
-                sb.append("正确答案：").append(q.getAnswer());
+            List<QuestionVO> questions = aiAnswerRepository.getGapQuestions(offset, PAGE_SIZE);
+            // 每页题目并行调用AI，每个线程使用独立的conversationId避免ChatMemory污染
+            List<CompletableFuture<AIAnswerInsertEntity>> futures = new ArrayList<>(questions.size());
+            for (QuestionVO q : questions) {
+                futures.add(CompletableFuture.supplyAsync(() -> {
+                    StringBuilder sb = new StringBuilder();
+                    sb.append(q.getDescription()).append("\n\n");
+                    sb.append("正确答案：").append(q.getAnswer());
 
-                String aiResult = chatClient.prompt(sb.toString())
-                        .advisors(a -> a.param(ChatMemory.CONVERSATION_ID, "test-conversation"))
-                        .call().content();
-                writeBuffer.add(AIAnswerInsertEntity.builder()
-                        .questionId(q.getQuestionId())
-                        .aiAnswer(aiResult)
-                        .build());
-
-                log.info("生成AI解析 type=填空题 questionId={}，当前writeBuffer大小：{}", q.getQuestionId(), writeBuffer.size());
+                    String aiResult = chatClient.prompt(sb.toString())
+                            .advisors(a -> a.param(ChatMemory.CONVERSATION_ID, UUID.randomUUID().toString()))
+                            .call().content();
+                    return AIAnswerInsertEntity.builder()
+                            .questionId(q.getQuestionId())
+                            .aiAnswer(aiResult)
+                            .build();
+                }, aiExecutor));
+            }
+            // 在主线程收集结果，写入writeBuffer，保持原有刷写逻辑
+            for (CompletableFuture<AIAnswerInsertEntity> future : futures) {
+                AIAnswerInsertEntity entity = future.join();
+                writeBuffer.add(entity);
+                log.info("生成AI解析 type=填空题 questionId={}，当前writeBuffer大小：{}", entity.getQuestionId(), writeBuffer.size());
                 if (writeBuffer.size() % BATCH_SIZE >= BATCH_SIZE - 1) {
                     aiAnswerRepository.gapBatchUpdateAIAnswer(writeBuffer);
                     log.info("写入字符串");
@@ -174,8 +205,14 @@ public class AIAnswerServiceImpl implements IAIAnswerService {
     public AIAnswerMsgEntity Generate(AIAnswerGetQuestionReqEntity aiAnswerGetQuestionReqEntity) {
 
         log.info("获取已生成回答：{}", aiAnswerGetQuestionReqEntity);
-        return AIAnswerMsgEntity.builder()
-                .msg(aiAnswerRepository.getAnswerByQuestionId(aiAnswerGetQuestionReqEntity))
-                .build();
+
+        // 延迟5~10秒，使用 CompletableFuture.delayedExecutor 不阻塞其他线程
+        long delaySeconds = 5 + (long) (Math.random() * 6);
+        return CompletableFuture.supplyAsync(() ->
+                        AIAnswerMsgEntity.builder()
+                                .msg(aiAnswerRepository.getAnswerByQuestionId(aiAnswerGetQuestionReqEntity))
+                                .build(),
+                CompletableFuture.delayedExecutor(delaySeconds, java.util.concurrent.TimeUnit.SECONDS)
+        ).join();
     }
 }

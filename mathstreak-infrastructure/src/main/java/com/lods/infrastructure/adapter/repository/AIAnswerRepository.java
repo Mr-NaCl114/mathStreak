@@ -57,22 +57,20 @@ public class AIAnswerRepository implements IAIAnswerRepository {
     }
 
     @Override
-    public QuestionVO[] getChoiceQuestions(int offset, int pageSize) {
-        Question[] question = choiceQuestionDao.getRangeQuestion(offset, pageSize);
-        QuestionVO[] vos = new QuestionVO[question.length];
-        int index = 0;
-        for (Question q : question) {
-            vos[index++] = QuestionVO.builder()
-                    .questionId(q.getQuestionId())
-                    .description(q.getDescription())
-                    .optA(q.getOptA())
-                    .optB(q.getOptB())
-                    .optC(q.getOptC())
-                    .optD(q.getOptD())
-                    .answer(q.getAnswer())
-                    .build();
-        }
-        return vos;
+    public List<QuestionVO> getChoiceQuestions(int offset, int pageSize) {
+        List<Question> questions = choiceQuestionDao.getRangeQuestion(offset, pageSize);
+
+        return questions.stream()
+                .map(question -> QuestionVO.builder()
+                        .questionId(question.getQuestionId())
+                        .description(question.getDescription())
+                        .optA(question.getOptA())
+                        .optB(question.getOptB())
+                        .optC(question.getOptC())
+                        .optD(question.getOptD())
+                        .answer(question.getAnswer())
+                        .build())
+                .toList();
     }
 
     @Override
@@ -81,18 +79,16 @@ public class AIAnswerRepository implements IAIAnswerRepository {
     }
 
     @Override
-    public QuestionVO[] getGapQuestions(int offset, int pageSize) {
-        Question[] question = gapQuestionDao.getRangeQuestion(offset, pageSize);
-        QuestionVO[] vos = new QuestionVO[question.length];
-        int index = 0;
-        for (Question q : question) {
-            vos[index++] = QuestionVO.builder()
-                    .questionId(q.getQuestionId())
-                    .description(q.getDescription())
-                    .answer(q.getAnswer())
-                    .build();
-        }
-        return vos;
+    public List<QuestionVO> getGapQuestions(int offset, int pageSize) {
+        List<Question> questions = choiceQuestionDao.getRangeQuestion(offset, pageSize);
+
+        return questions.stream()
+                .map(question -> QuestionVO.builder()
+                        .questionId(question.getQuestionId())
+                        .description(question.getDescription())
+                        .answer(question.getAnswer())
+                        .build())
+                .toList();
     }
 
     @Override

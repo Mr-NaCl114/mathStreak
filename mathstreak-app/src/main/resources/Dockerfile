@@ -14,7 +14,7 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 # 将其复制并重命名为 app.jar
 ADD target/mathstreak-app-*.jar /app.jar
 
-# 暴露端口 (对应 application-dev.yml 中 server.port: 10001)
+# 暴露端口 (对应 application-pro.yml 中 server.port: 10001)
 EXPOSE 10001
 
 # 启动命令

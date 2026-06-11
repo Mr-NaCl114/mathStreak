@@ -12,11 +12,11 @@ public interface IAIAnswerRepository {
 
     Integer countChoiceQuestions();
 
-    QuestionVO[] getChoiceQuestions(int offset, int pageSize);
+    List<QuestionVO> getChoiceQuestions(int offset, int pageSize);
 
     Integer countGapQuestions();
 
-    QuestionVO[] getGapQuestions(int offset, int pageSize);
+    List<QuestionVO> getGapQuestions(int offset, int pageSize);
 
     void choiceBatchUpdateAIAnswer(List<AIAnswerInsertEntity> list);
 

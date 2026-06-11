@@ -1,6 +1,6 @@
 services:
   # MySQL 9.0.1
-  # 对应 application-dev.yml 连接地址: jdbc:mysql://mysql:3306/mathstreak (注意容器内互联使用服务名 mysql 和默认端口 3306)
+  # 对应 application-pro.yml 连接地址: jdbc:mysql://mysql:3306/mathstreak (注意容器内互联使用服务名 mysql 和默认端口 3306)
   mysql:
     image: mysql:9.0.1
     container_name: mysql

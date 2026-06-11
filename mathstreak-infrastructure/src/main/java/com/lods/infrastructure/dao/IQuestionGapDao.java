@@ -1,6 +1,7 @@
 package com.lods.infrastructure.dao;
 
 import com.lods.domain.answer.model.entity.AIAnswerInsertEntity;
+import com.lods.domain.question.model.valobj.QuestionVO;
 import com.lods.infrastructure.dao.po.Question;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -15,7 +16,7 @@ public interface IQuestionGapDao {
 
     Question queryQuestionById(int id);
 
-    Question[] getRangeQuestion(int offset, int pageSize);
+    List<Question> getRangeQuestion(int offset, int pageSize);
 
     void batchUpdateAIAnswer(List<AIAnswerInsertEntity> list);
 
