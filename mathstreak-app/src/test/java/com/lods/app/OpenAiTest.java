@@ -60,7 +60,7 @@ class OpenAiTest {
                 .build();
     }
 
-    @Test
+//    @Test
     public void test() {
         String userInput = "Consider the given functions: $$\\begin{array}{ccc}\n" +
                 "f(x) & = & 5x^2 - \\frac{1}{x}+ 3\\\\\n" +

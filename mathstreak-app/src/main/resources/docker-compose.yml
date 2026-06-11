@@ -14,8 +14,8 @@ services:
     ports:
       - "3308:3306"
     volumes:
-      #      - ./src/main/resources/temp/mysql:/docker-entrypoint-initdb.d
-      - /home/ubuntu/work/IDEA/mathStreak/mysql:/docker-entrypoint-initdb.d
+      # 将同目录下的 mathstreak.sql 挂载到初始化目录，MySQL 首次启动时自动导入
+      - ./mathstreak.sql:/docker-entrypoint-initdb.d/mathstreak.sql
     command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
     networks:
       - my-network
@@ -43,17 +43,19 @@ services:
       timeout: 5s
       retries: 3
 
-  #  redis-importer:
-  #    image: redis:7.4.0
-  #    depends_on:
-  #      - redis
-  #    volumes:
-  #      # 挂载 Redis 命令文件
-  #      - ./src/main/resources/temp/math.redis:/data/math.redis
-  #    # 等待 Redis 启动后，使用 redis-cli 导入数据
-  #    # 注意：这里使用了之前 application.yml 里提到的密码 114514
-  #    command: >
-  #      /bin/sh -c "sleep 5; cat /data/math.redis | redis-cli -h redis -a 114514"
+  # Redis 数据导入器：等待 Redis 启动后导入备份数据
+#  redis-importer:
+#    image: redis:7.4.0
+#    depends_on:
+#      redis:
+#        condition: service_healthy
+#    volumes:
+#      # 将同目录下的 redis-backup.redis 挂载到容器中
+#      - ./redis-backup.redis:/data/redis-backup.redis
+#    command: >
+#      /bin/sh -c "sleep 3; cat /data/redis-backup.redis | redis-cli -h redis -a 114514"
+#    networks:
+#      - my-network
 
   # MathStreak Application
   mathstreak:
@@ -68,9 +70,10 @@ services:
       - TZ=Asia/Shanghai
       - SERVER_PORT=10001
       # 覆盖 application.yml 中的配置，使用 docker 网络中的服务名
-      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/mathstreak?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true
-      - SPRING_DATASOURCE_USERNAME=math
-      - SPRING_DATASOURCE_PASSWORD=7891919
+      # 注意：DataSourceConfig 使用命名数据源 spring.datasource.mysql.*，因此环境变量也必须带 MYSQL 前缀
+      - SPRING_DATASOURCE_MYSQL_URL=jdbc:mysql://mysql:3306/mathstreak?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true
+      - SPRING_DATASOURCE_MYSQL_USERNAME=math
+      - SPRING_DATASOURCE_MYSQL_PASSWORD=7891919
       - SPRING_DATA_REDIS_HOST=redis
       - SPRING_DATA_REDIS_PORT=6379
       - SPRING_DATA_REDIS_PASSWORD=114514

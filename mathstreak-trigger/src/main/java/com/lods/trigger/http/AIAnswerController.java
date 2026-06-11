@@ -38,7 +38,7 @@ public class AIAnswerController {
                 .build();
     }
 
-    @RequestMapping(value = "new_generate", method = RequestMethod.POST)
+    @RequestMapping(value = "/inside/new_generate", method = RequestMethod.POST)
     public Response<AIAnswerMsgRes> newGenerate() throws Exception {
 
         try{
