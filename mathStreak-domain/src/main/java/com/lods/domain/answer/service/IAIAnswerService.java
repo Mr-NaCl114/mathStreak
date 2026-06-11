@@ -9,5 +9,7 @@ public interface IAIAnswerService {
 
     void newGenerateForAll();
 
-    AIAnswerMsgEntity Generate(AIAnswerGetQuestionReqEntity aiAnswerGetQuestionReqEntity);
+    AIAnswerMsgEntity generate(AIAnswerGetQuestionReqEntity aiAnswerGetQuestionReqEntity);
+
+    void cleanStaleConversations();
 }

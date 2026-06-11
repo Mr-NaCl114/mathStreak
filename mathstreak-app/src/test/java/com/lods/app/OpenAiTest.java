@@ -1,5 +1,7 @@
 package com.lods.app;
 
+import com.lods.domain.answer.model.entity.AIAnswerGetQuestionReqEntity;
+import com.lods.domain.answer.service.IAIAnswerService;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,7 +20,6 @@ class OpenAiTest {
 
     @Resource
     private ChatModel chatModel;
-
     @Resource
     private ChatClient.Builder chatClientBuilder;
 
@@ -26,6 +27,8 @@ class OpenAiTest {
 
     @Resource
     private PgVectorStore vectorStore;
+    @Resource
+    private IAIAnswerService aiAnswerService;
 
     @BeforeEach
     public void init() {
@@ -60,7 +63,7 @@ class OpenAiTest {
                 .build();
     }
 
-//    @Test
+    //    @Test
     public void test() {
         String userInput = "Consider the given functions: $$\\begin{array}{ccc}\n" +
                 "f(x) & = & 5x^2 - \\frac{1}{x}+ 3\\\\\n" +
@@ -75,18 +78,24 @@ class OpenAiTest {
                 .call().content());
     }
 
+    @Test
+    public void clearConversation() {
+
+        aiAnswerService.cleanStaleConversations();
+
+    }
+
 //    @Test
-//    public void upload() {
-//        // textResource、articlePromptWordsResource
-//        TikaDocumentReader reader = new TikaDocumentReader(articlePromptWordsResource);
-//
-//        List<Document> documents = reader.get();
-//        List<Document> documentSplitterList = tokenTextSplitter.apply(documents);
-//
-//        documentSplitterList.forEach(doc -> doc.getMetadata().put("knowledge", "article-prompt-words"));
-//
-//        pgVectorStore.accept(documentSplitterList);
-//
-//        log.info("上传完成");
-//    }
+    public void gen() {
+
+//        log.info("{}",aiAnswerService.generate(AIAnswerGetQuestionReqEntity.builder()
+//                .type(1)
+//                .questionId(23)
+//                .build()));
+
+        log.info("{}",aiAnswerService.newGenerate(AIAnswerGetQuestionReqEntity.builder()
+                .type(1)
+                .questionId(23)
+                .build()));
+    }
 }

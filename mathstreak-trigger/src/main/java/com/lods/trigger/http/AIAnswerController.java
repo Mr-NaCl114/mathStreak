@@ -24,7 +24,7 @@ public class AIAnswerController {
     @RequestMapping(value = "generate", method = RequestMethod.POST)
     public Response<AIAnswerMsgRes> Generate(@RequestBody AIAnswerReqInfo info) throws Exception {
 
-        AIAnswerMsgEntity entity = IAIAnswerService.Generate(AIAnswerGetQuestionReqEntity.builder()
+        AIAnswerMsgEntity entity = IAIAnswerService.generate(AIAnswerGetQuestionReqEntity.builder()
                 .type(info.getType())
                 .questionId(info.getQuestionId())
                 .build());

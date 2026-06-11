@@ -13,6 +13,7 @@ import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
 import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.ai.chat.memory.MessageWindowChatMemory;
+import org.springframework.ai.chat.messages.Message;
 import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -22,8 +23,10 @@ import jakarta.annotation.PreDestroy;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -44,6 +47,9 @@ public class AIAnswerServiceImpl implements IAIAnswerService {
     @PostConstruct
     public void init() {
         aiExecutor = Executors.newFixedThreadPool(Math.min(10, Runtime.getRuntime().availableProcessors()));
+        chatMemoryDelegate = MessageWindowChatMemory.builder()
+                .maxMessages(100)
+                .build();
         chatClient = chatClientBuilder
                 .defaultSystem("""
                          	 你是一个能够解决和解析各个阶段、各种类型数学或逻辑题目的解题讲解员，只能且唯一能够做的事是专注于题目和解题本身，除了和解题过程相关不能有其他无效输出。
@@ -60,9 +66,7 @@ public class AIAnswerServiceImpl implements IAIAnswerService {
                         """)
                 .defaultAdvisors(
                         MessageChatMemoryAdvisor.builder(
-                                MessageWindowChatMemory.builder()
-                                        .maxMessages(100)
-                                        .build()
+                                new TrackedChatMemory(chatMemoryDelegate)
                         ).build()
                 )
                 .build();
@@ -202,17 +206,81 @@ public class AIAnswerServiceImpl implements IAIAnswerService {
     }
 
     @Override
-    public AIAnswerMsgEntity Generate(AIAnswerGetQuestionReqEntity aiAnswerGetQuestionReqEntity) {
-
-        log.info("获取已生成回答：{}", aiAnswerGetQuestionReqEntity);
+    public AIAnswerMsgEntity generate(AIAnswerGetQuestionReqEntity aiAnswerGetQuestionReqEntity) {
 
         // 延迟5~10秒，使用 CompletableFuture.delayedExecutor 不阻塞其他线程
         long delaySeconds = 5 + (long) (Math.random() * 6);
+        log.info("获取已生成回答：{}，等待：{}", aiAnswerGetQuestionReqEntity, delaySeconds);
         return CompletableFuture.supplyAsync(() ->
                         AIAnswerMsgEntity.builder()
                                 .msg(aiAnswerRepository.getAnswerByQuestionId(aiAnswerGetQuestionReqEntity))
                                 .build(),
                 CompletableFuture.delayedExecutor(delaySeconds, java.util.concurrent.TimeUnit.SECONDS)
         ).join();
+    }
+
+    // ===================== Conversation 超时清理 =====================
+
+    /** conversation 最后访问时间记录 */
+    private final Map<String, Long> conversationLastAccess = new ConcurrentHashMap<>();
+
+    /** 超时阈值：30分钟未访问则清理（单位：毫秒） */
+    private static final long CONVERSATION_TIMEOUT_MS = 10 * 60 * 1000L;
+
+    /**
+     * 每10分钟清理一次超过30分钟未访问的 conversation
+     */
+    // 每10分钟执行一次
+    @Scheduled(cron = "0 */10 * * * ?")
+    public void cleanStaleConversations() {
+        long now = System.currentTimeMillis();
+        int cleaned = 0;
+        var iterator = conversationLastAccess.entrySet().iterator();
+        while (iterator.hasNext()) {
+            var entry = iterator.next();
+            if (now - entry.getValue() > CONVERSATION_TIMEOUT_MS) {
+                chatMemoryDelegate.clear(entry.getKey());
+                iterator.remove();
+                cleaned++;
+            }
+        }
+        if (cleaned > 0) {
+            log.info("清理过期conversation {}个，剩余{}个", cleaned, conversationLastAccess.size());
+        } else {
+            log.info("没有过期conversation");
+        }
+    }
+
+    /** 持有底层 MessageWindowChatMemory 引用，用于清理 */
+    private MessageWindowChatMemory chatMemoryDelegate;
+
+    /**
+     * 包装 ChatMemory，自动跟踪每个 conversation 的最后访问时间
+     */
+    private class TrackedChatMemory implements ChatMemory {
+
+        private final MessageWindowChatMemory delegate;
+
+        TrackedChatMemory(MessageWindowChatMemory delegate) {
+            this.delegate = delegate;
+        }
+
+        @Override
+        public void add(String conversationId, List<Message> messages) {
+            conversationLastAccess.put(conversationId, System.currentTimeMillis());
+            delegate.add(conversationId, messages);
+        }
+
+        @Override
+        public List<Message> get(String conversationId) {
+            conversationLastAccess.put(conversationId, System.currentTimeMillis());
+            return delegate.get(conversationId);
+        }
+
+        @Override
+        public void clear(String conversationId) {
+            conversationLastAccess.remove(conversationId);
+            delegate.clear(conversationId);
+        }
     }
 }
