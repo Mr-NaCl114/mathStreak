@@ -80,7 +80,7 @@ public class AIAnswerRepository implements IAIAnswerRepository {
 
     @Override
     public List<QuestionVO> getGapQuestions(int offset, int pageSize) {
-        List<Question> questions = choiceQuestionDao.getRangeQuestion(offset, pageSize);
+        List<Question> questions = gapQuestionDao.getRangeQuestion(offset, pageSize);
 
         return questions.stream()
                 .map(question -> QuestionVO.builder()

@@ -46,7 +46,7 @@ public class AIAnswerServiceImpl implements IAIAnswerService {
 
     @PostConstruct
     public void init() {
-        aiExecutor = Executors.newFixedThreadPool(Math.min(10, Runtime.getRuntime().availableProcessors()));
+        aiExecutor = Executors.newFixedThreadPool(Math.min(20, Runtime.getRuntime().availableProcessors() * 2));
         chatMemoryDelegate = MessageWindowChatMemory.builder()
                 .maxMessages(100)
                 .build();
@@ -64,11 +64,11 @@ public class AIAnswerServiceImpl implements IAIAnswerService {
                         
                          	 {documents}
                         """)
-                .defaultAdvisors(
-                        MessageChatMemoryAdvisor.builder(
-                                new TrackedChatMemory(chatMemoryDelegate)
-                        ).build()
-                )
+//                .defaultAdvisors(
+//                        MessageChatMemoryAdvisor.builder(
+//                                new TrackedChatMemory(chatMemoryDelegate)
+//                        ).build()
+//                )
                 .build();
     }
 
@@ -176,7 +176,7 @@ public class AIAnswerServiceImpl implements IAIAnswerService {
                     sb.append("正确答案：").append(q.getAnswer());
 
                     String aiResult = chatClient.prompt(sb.toString())
-                            .advisors(a -> a.param(ChatMemory.CONVERSATION_ID, UUID.randomUUID().toString()))
+//                            .advisors(a -> a.param(ChatMemory.CONVERSATION_ID, UUID.randomUUID().toString()))
                             .call().content();
                     return AIAnswerInsertEntity.builder()
                             .questionId(q.getQuestionId())
@@ -209,7 +209,7 @@ public class AIAnswerServiceImpl implements IAIAnswerService {
     public AIAnswerMsgEntity generate(AIAnswerGetQuestionReqEntity aiAnswerGetQuestionReqEntity) {
 
         // 延迟5~10秒，使用 CompletableFuture.delayedExecutor 不阻塞其他线程
-        long delaySeconds = 5 + (long) (Math.random() * 6);
+        long delaySeconds = 3 + (long) (Math.random() * 6);
         log.info("获取已生成回答：{}，等待：{}", aiAnswerGetQuestionReqEntity, delaySeconds);
         return CompletableFuture.supplyAsync(() ->
                         AIAnswerMsgEntity.builder()
@@ -231,7 +231,7 @@ public class AIAnswerServiceImpl implements IAIAnswerService {
      * 每10分钟清理一次超过30分钟未访问的 conversation
      */
     // 每10分钟执行一次
-    @Scheduled(cron = "0 */10 * * * ?")
+    @Scheduled(cron = "0 */30 * * * ?")
     public void cleanStaleConversations() {
         long now = System.currentTimeMillis();
         int cleaned = 0;
