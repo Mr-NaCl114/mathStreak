@@ -9,6 +9,7 @@
         <result column="diff" property="difficultyLevel"/>
         <result column="total_rows" property="total"/>
         <result column="ai_answer" property="aiAnswer"/>
+        <result column="analysis" property="analysis"/>
 
     </resultMap>
 

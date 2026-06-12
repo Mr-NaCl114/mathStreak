@@ -209,7 +209,7 @@ public class AIAnswerServiceImpl implements IAIAnswerService {
     public AIAnswerMsgEntity generate(AIAnswerGetQuestionReqEntity aiAnswerGetQuestionReqEntity) {
 
         // 延迟5~10秒，使用 CompletableFuture.delayedExecutor 不阻塞其他线程
-        long delaySeconds = 3 + (long) (Math.random() * 6);
+        long delaySeconds = 2 + (long) (Math.random() * 6);
         log.info("获取已生成回答：{}，等待：{}", aiAnswerGetQuestionReqEntity, delaySeconds);
         return CompletableFuture.supplyAsync(() ->
                         AIAnswerMsgEntity.builder()

@@ -19,5 +19,6 @@ public class Question {
     private String answer;
     private Integer difficultyLevel;
     private Integer total;
+    private String analysis;
     private String aiAnswer;
 }
