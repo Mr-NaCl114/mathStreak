@@ -19,8 +19,6 @@ public class SignServiceImpl implements ISignService {
             log.info("sign构建，开启设备，字段: \"userId\":\"{}\"，ON", params.get("userId"));
         } else if (params.containsKey("orderNum") && params.containsKey("tableName")) {
             log.info("sign构建，关闭设备，字段: \"userId\":\"{}\"，OFF", params.get("userId"));
-        } else {
-            log.info("sign构建，字段: \"userId\":\"{}\"", params.get("userId"));
         }
 
         return SignBuild.generateSign(params);

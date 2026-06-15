@@ -149,7 +149,7 @@ public class AIAnswerServiceImpl implements IAIAnswerService {
                 log.info("生成AI解析 type=选择题 questionId={}，当前writeBuffer大小：{}", entity.getQuestionId(), writeBuffer.size());
                 if (writeBuffer.size() % BATCH_SIZE >= BATCH_SIZE - 1) {
                     aiAnswerRepository.choiceBatchUpdateAIAnswer(writeBuffer);
-                    log.info("写入字符串");
+                    log.info("选择题，写入字符串");
                     writeBuffer.clear();
                 }
             }
@@ -157,7 +157,7 @@ public class AIAnswerServiceImpl implements IAIAnswerService {
         // 选择题剩余
         if (!writeBuffer.isEmpty()) {
             aiAnswerRepository.choiceBatchUpdateAIAnswer(writeBuffer);
-            log.info("写入字符串");
+            log.info("选择题剩余，写入字符串");
             writeBuffer.clear();
         }
 
@@ -189,7 +189,7 @@ public class AIAnswerServiceImpl implements IAIAnswerService {
                 log.info("生成AI解析 type=填空题 questionId={}，当前writeBuffer大小：{}", entity.getQuestionId(), writeBuffer.size());
                 if (writeBuffer.size() % BATCH_SIZE >= BATCH_SIZE - 1) {
                     aiAnswerRepository.gapBatchUpdateAIAnswer(writeBuffer);
-                    log.info("写入字符串");
+                    log.info("填空题，写入字符串");
                     writeBuffer.clear();
                 }
             }
@@ -197,7 +197,7 @@ public class AIAnswerServiceImpl implements IAIAnswerService {
         // 填空题剩余
         if (!writeBuffer.isEmpty()) {
             aiAnswerRepository.gapBatchUpdateAIAnswer(writeBuffer);
-            log.info("写入字符串");
+            log.info("填空题剩余，写入字符串");
             writeBuffer.clear();
         }
         log.info("批量AI解析生成完成");

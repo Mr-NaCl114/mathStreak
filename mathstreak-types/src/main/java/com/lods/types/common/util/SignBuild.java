@@ -11,10 +11,6 @@ public final class SignBuild {
 
     private static final String SECRET = "e275f1af-1dda-4b47-9d87-afcbe1f96dca";
 
-    private void SignUtil() {
-        // 工具类禁止实例化
-    }
-
     /**
      * 根据参数生成 sign
      * 规则与 Python 版本保持一致：

@@ -26,8 +26,8 @@ public class Constants {
         FALI(1001, "错误"),
         OTHER_FAULT(1002, "失败");
 
-        private Integer code;
-        private String msg;
+        private final Integer code;
+        private final String msg;
 
     }
 
