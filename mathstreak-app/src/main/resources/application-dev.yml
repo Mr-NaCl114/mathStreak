@@ -10,8 +10,6 @@ server:
 spring:
   datasource:
     mysql:
-      username: root
-      password: 114514
       url: jdbc:mysql://127.0.0.1:3306/mathstreak?useUnicode=true&characterEncoding=utf8&autoReconnect=true&zeroDateTimeBehavior=convertToNull&serverTimezone=Asia/Shanghai&useSSL=true
       driver-class-name: com.mysql.cj.jdbc.Driver
       initialSize: 5
@@ -29,9 +27,6 @@ spring:
 
     pgvector:
       driver-class-name: org.postgresql.Driver
-      username: postgres
-      password: 7891919
-      url: jdbc:postgresql://193.112.94.229:5434/ai-rag-knowledge
       type: com.zaxxer.hikari.HikariDataSource
       hikari:
         maximum-pool-size: 5
@@ -41,16 +36,12 @@ spring:
   ai:
     openai:
       base-url: https://api.deepseek.com/
-      api-key: sk-4a7604bd802940c18d2597c49b316f3e
       timeout: 120000
       chat:
         model: deepseek-v4-flash
 
   data:
     redis:
-      host: 193.112.94.229
-      port: 6379
-      password: 114514
       database: 1
 
 mybatis:
