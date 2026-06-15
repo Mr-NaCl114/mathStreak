@@ -1,6 +1,7 @@
 package com.lods.infrastructure.adapter.repository;
 
 import com.lods.domain.status.apadter.repository.IStatusRepository;
+import com.lods.domain.status.model.entity.CurrentAnswerChangeEntity;
 import com.lods.domain.status.model.valobj.GameStatusVO;
 import com.lods.infrastructure.dao.po.GameStatus;
 import com.lods.infrastructure.redis.StatusUpdate;
@@ -17,6 +18,7 @@ public class StatusRepository implements IStatusRepository {
 
     @Override
     public GameStatusVO getCurrentStatus() {
+
         GameStatus status = statusUpdate.getCurrentStatus();
 
         return GameStatusVO.builder()
@@ -25,7 +27,20 @@ public class StatusRepository implements IStatusRepository {
                 .life(status.getLife())
                 .maxLife(status.getMaxLife())
                 .ipLimit(status.getIpLimit())
+                .currentQuestionAnsweringCount(status.getCurrentQuestionAnsweringCount())
                 .build();
+    }
+
+    @Override
+    public void updateCurrentAnswer(CurrentAnswerChangeEntity currentAnswerChangeEntity) {
+
+        statusUpdate.CurrentAnswerCount(currentAnswerChangeEntity.getIsAdd());
+    }
+
+    @Override
+    public void initCurrentAnswer() {
+
+        statusUpdate.initCurrentAnswer();
     }
 }
 

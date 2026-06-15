@@ -1,7 +1,6 @@
 package com.lods.infrastructure.dao;
 
 import com.lods.domain.answer.model.entity.AIAnswerInsertEntity;
-import com.lods.domain.question.model.valobj.QuestionVO;
 import com.lods.infrastructure.dao.po.Question;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;

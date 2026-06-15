@@ -41,7 +41,7 @@ public class QuestionServiceImpl implements IQuestionService {
     @Override
     public QuestionCorrectEntity submit(QuestionSubmitEntity questionSubmitEntity) {
 
-        log.info("上传为 {},提交的答案： {}", questionSubmitEntity.getType(), questionSubmitEntity.getAnswerContent());
+        log.info("上传为 {}, 提交的答案： {}", questionSubmitEntity.getType(), questionSubmitEntity.getAnswerContent());
         // 选择题
         if (questionSubmitEntity.getType().equals(Constants.TypeOfQuestion.CHOICE.getCode())) {
             QuestionVO questionVO = questionRepository.getQuestionChoiceById(questionSubmitEntity.getQuestionId());

@@ -1,6 +1,7 @@
 package com.lods.domain.status.service.impl;
 
 import com.lods.domain.status.apadter.repository.IStatusRepository;
+import com.lods.domain.status.model.entity.CurrentAnswerChangeEntity;
 import com.lods.domain.status.model.entity.GameStatusEntity;
 import com.lods.domain.status.model.valobj.GameStatusVO;
 import com.lods.domain.status.service.IStatusService;
@@ -14,6 +15,7 @@ public class StatusService implements IStatusService {
     private IStatusRepository statusRepository;
 
     public GameStatusEntity getCurrentStatus() {
+
         GameStatusVO status = statusRepository.getCurrentStatus();
 
         return GameStatusEntity.builder()
@@ -22,6 +24,19 @@ public class StatusService implements IStatusService {
                 .maxStreak(status.getMaxStreak())
                 .maxLife(status.getMaxLife())
                 .ipLimit(status.getIpLimit())
+                .currentQuestionAnsweringCount(status.getCurrentQuestionAnsweringCount())
                 .build();
+    }
+
+    @Override
+    public void updateCurrentAnswer(CurrentAnswerChangeEntity currentAnswerChangeEntity) {
+
+        statusRepository.updateCurrentAnswer(currentAnswerChangeEntity);
+    }
+
+    @Override
+    public void initCurrentAnswer() {
+
+        statusRepository.initCurrentAnswer();
     }
 }

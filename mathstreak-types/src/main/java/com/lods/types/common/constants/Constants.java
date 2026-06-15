@@ -63,8 +63,19 @@ public class Constants {
         MAX_LIFE("maxLife"),
         TOTAL_STREAK("totalStreak"),
         MAX_STREAK("maxStreak"),
-        IP_LIMIT("ipLimit");
+        IP_LIMIT("ipLimit"),
+        CURRENT_ANSWER("currentQuestionAnsweringCount");
 
+        private final String value;
+    }
+
+    @AllArgsConstructor
+    @Getter
+    public enum CurrentAnswerChange {
+        ADD(1,"add"),
+        REDUCE(-1,"reduce");
+
+        private final Integer code;
         private final String value;
     }
 }

@@ -15,13 +15,26 @@ public class StatusUpdate {
     private StringRedisTemplate stringRedisTemplate;
 
     public GameStatus getCurrentStatus() {
+
         return GameStatus.builder()
                 .totalStreak(parseInt.parseInt(stringRedisTemplate.opsForValue().get(Constants.WebStatus.TOTAL_STREAK.getValue())))
                 .maxStreak(parseInt.parseInt(stringRedisTemplate.opsForValue().get(Constants.WebStatus.MAX_STREAK.getValue())))
                 .life(parseInt.parseInt(stringRedisTemplate.opsForValue().get(Constants.WebStatus.LIFE.getValue())))
                 .maxLife(parseInt.parseInt(stringRedisTemplate.opsForValue().get(Constants.WebStatus.MAX_LIFE.getValue())))
                 .ipLimit(parseInt.parseInt(stringRedisTemplate.opsForValue().get(Constants.WebStatus.IP_LIMIT.getValue())))
+                .currentQuestionAnsweringCount(parseInt.parseInt(stringRedisTemplate.opsForValue().get(Constants.WebStatus.CURRENT_ANSWER.getValue())))
                 .build();
+    }
+
+    public void CurrentAnswerCount(Integer isAdd) {
+
+        Integer current = parseInt.parseInt(stringRedisTemplate.opsForValue().get(Constants.WebStatus.CURRENT_ANSWER.getValue()));
+        stringRedisTemplate.opsForValue().set(Constants.WebStatus.CURRENT_ANSWER.getValue(), String.valueOf(current + isAdd));
+    }
+
+    public void initCurrentAnswer() {
+
+        stringRedisTemplate.opsForValue().set(Constants.WebStatus.CURRENT_ANSWER.getValue(), String.valueOf(0));
     }
 }
 

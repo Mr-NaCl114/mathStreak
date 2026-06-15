@@ -16,5 +16,6 @@ public class GameStatusVO {
     private Integer life;
     private Integer maxLife;
     private Integer ipLimit;
+    private Integer currentQuestionAnsweringCount;
 
 }

@@ -2,7 +2,10 @@ package com.lods.trigger.listener;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lods.api.response.Response;
+import com.lods.domain.status.model.entity.CurrentAnswerChangeEntity;
+import com.lods.domain.status.service.IStatusService;
 import com.lods.types.common.constants.Constants;
+import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
@@ -20,12 +23,23 @@ public class LodsWebSocketHandler extends TextWebSocketHandler {
 
     private final Map<String, WebSocketSession> sessionMap = new ConcurrentHashMap<>();
 
+    @Resource
+    private IStatusService IStatusService;
+
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
-        log.info("新连接建立: {}", session.getId());
+//        log.info("新连接建立: {}, 远程IP：{}", session.getId(), session.getRemoteAddress());
+        log.info("新连接建立, 远程IP：{}", session.getRemoteAddress());
+
+        //  +1当前连接人数
         sessionMap.put(session.getId(), session);
-        log.info("seesion: {} , {}", session.getId(), session.getRemoteAddress());
+        IStatusService.updateCurrentAnswer(CurrentAnswerChangeEntity.builder()
+                .isAdd(Constants.CurrentAnswerChange.ADD.getCode())
+                .build());
+
+        //  发送信息
         session.sendMessage(new TextMessage("连接完成"));
+        sendMessage(IStatusService.getCurrentStatus());
     }
 
     @Override
@@ -36,13 +50,21 @@ public class LodsWebSocketHandler extends TextWebSocketHandler {
 
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
-        log.info("连接关闭: {}", session.getId());
+        log.info("连接关闭, 远程IP：{}", session.getRemoteAddress());
+
+        //  -1当前连接人数
         sessionMap.remove(session.getId());
+        IStatusService.updateCurrentAnswer(CurrentAnswerChangeEntity.builder()
+                .isAdd(Constants.CurrentAnswerChange.REDUCE.getCode())
+                .build());
+
+        //  发送信息
+        sendMessage(IStatusService.getCurrentStatus());
     }
 
     public void sendMessage(Object message) throws IOException {
         log.info("发送消息： {}", message);
-        log.info("当前在线连接数：{}", sessionMap.size());
+        //  log.info("当前在线连接数：{}", sessionMap.size());
         for (WebSocketSession session : sessionMap.values()) {
             String json = new ObjectMapper().writeValueAsString(Response.builder()
                     .code(Constants.ResponseCode.SUCCESS.getCode())

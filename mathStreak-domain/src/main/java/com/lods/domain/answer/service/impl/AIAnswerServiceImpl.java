@@ -7,19 +7,17 @@ import com.lods.domain.answer.model.entity.AIAnswerInsertEntity;
 import com.lods.domain.answer.model.entity.AIAnswerMsgEntity;
 import com.lods.domain.answer.service.IAIAnswerService;
 import com.lods.domain.question.model.valobj.QuestionVO;
+import jakarta.annotation.PostConstruct;
+import jakarta.annotation.PreDestroy;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.client.ChatClient;
-import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
 import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.ai.chat.memory.MessageWindowChatMemory;
 import org.springframework.ai.chat.messages.Message;
 import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-
-import jakarta.annotation.PostConstruct;
-import jakarta.annotation.PreDestroy;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +44,7 @@ public class AIAnswerServiceImpl implements IAIAnswerService {
 
     @PostConstruct
     public void init() {
-        aiExecutor = Executors.newFixedThreadPool(Math.min(20, Runtime.getRuntime().availableProcessors() * 2));
+        aiExecutor = Executors.newFixedThreadPool(Math.min(25, Runtime.getRuntime().availableProcessors() * 3));
         chatMemoryDelegate = MessageWindowChatMemory.builder()
                 .maxMessages(100)
                 .build();

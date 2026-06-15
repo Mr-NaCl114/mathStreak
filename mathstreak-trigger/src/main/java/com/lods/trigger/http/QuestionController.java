@@ -34,7 +34,8 @@ public class QuestionController implements IQuestionController {
     @Override
     @GetMapping("current-question")
     public Response<Object> currentQuestion() throws Exception{
-        lodsWebSocketHandler.sendMessage(IStatusService.getCurrentStatus());
+
+//        lodsWebSocketHandler.sendMessage(IStatusService.getCurrentStatus());
 
         QuestionDataResEntity question = IQuestionService.getQuestion();
 
