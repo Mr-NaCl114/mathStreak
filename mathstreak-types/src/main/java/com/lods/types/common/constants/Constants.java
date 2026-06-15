@@ -63,8 +63,8 @@ public class Constants {
         MAX_LIFE("maxLife"),
         TOTAL_STREAK("totalStreak"),
         MAX_STREAK("maxStreak"),
-        IP_LIMIT("ipLimit"),
-        CURRENT_ANSWER("currentQuestionAnsweringCount");
+        REMAIN_COUNT("accountTodayRemainingCount"),
+        CURRENT_ANSWER("answeringCount");
 
         private final String value;
     }

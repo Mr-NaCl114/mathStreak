@@ -26,8 +26,8 @@ public class StatusRepository implements IStatusRepository {
                 .maxStreak(status.getMaxStreak())
                 .life(status.getLife())
                 .maxLife(status.getMaxLife())
-                .ipLimit(status.getIpLimit())
-                .currentQuestionAnsweringCount(status.getCurrentQuestionAnsweringCount())
+                .accountTodayRemainingCount(status.getAccountTodayRemainingCount())
+                .answeringCount(status.getAnsweringCount())
                 .build();
     }
 

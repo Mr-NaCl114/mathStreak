@@ -15,7 +15,7 @@ public class GameStatusEntity {
     private Integer maxStreak;
     private Integer life;
     private Integer maxLife;
-    private Integer ipLimit;
-    private Integer currentQuestionAnsweringCount;
+    private Integer accountTodayRemainingCount;
+    private Integer answeringCount;
 
 }

@@ -21,8 +21,8 @@ public class StatusUpdate {
                 .maxStreak(parseInt.parseInt(stringRedisTemplate.opsForValue().get(Constants.WebStatus.MAX_STREAK.getValue())))
                 .life(parseInt.parseInt(stringRedisTemplate.opsForValue().get(Constants.WebStatus.LIFE.getValue())))
                 .maxLife(parseInt.parseInt(stringRedisTemplate.opsForValue().get(Constants.WebStatus.MAX_LIFE.getValue())))
-                .ipLimit(parseInt.parseInt(stringRedisTemplate.opsForValue().get(Constants.WebStatus.IP_LIMIT.getValue())))
-                .currentQuestionAnsweringCount(parseInt.parseInt(stringRedisTemplate.opsForValue().get(Constants.WebStatus.CURRENT_ANSWER.getValue())))
+                .accountTodayRemainingCount(parseInt.parseInt(stringRedisTemplate.opsForValue().get(Constants.WebStatus.REMAIN_COUNT.getValue())))
+                .answeringCount(parseInt.parseInt(stringRedisTemplate.opsForValue().get(Constants.WebStatus.CURRENT_ANSWER.getValue())))
                 .build();
     }
 

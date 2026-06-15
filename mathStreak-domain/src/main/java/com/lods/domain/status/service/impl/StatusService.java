@@ -23,8 +23,8 @@ public class StatusService implements IStatusService {
                 .totalStreak(status.getTotalStreak())
                 .maxStreak(status.getMaxStreak())
                 .maxLife(status.getMaxLife())
-                .ipLimit(status.getIpLimit())
-                .currentQuestionAnsweringCount(status.getCurrentQuestionAnsweringCount())
+                .accountTodayRemainingCount(status.getAccountTodayRemainingCount())
+                .answeringCount(status.getAnsweringCount())
                 .build();
     }
 
