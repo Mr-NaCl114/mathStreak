@@ -16,8 +16,6 @@ import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
-
 @Slf4j
 @RestController()
 @CrossOrigin("*")
@@ -32,7 +30,7 @@ public class QuestionController implements IQuestionController {
     private LodsWebSocketHandler lodsWebSocketHandler;
 
     @Override
-    @GetMapping("current-question")
+    @RequestMapping(value = "current_question", method = RequestMethod.GET)
     public Response<Object> currentQuestion() throws Exception {
 
         if (IStatusService.getRemainingCount() == 0) {
@@ -62,7 +60,7 @@ public class QuestionController implements IQuestionController {
     }
 
     @Override
-    @PostMapping("submit")
+    @RequestMapping(value = "submit", method = RequestMethod.POST)
     public Response<Object> submit(@RequestBody SubmitDTO submitDTO) throws Exception {
 
         QuestionSubmitEntity submit = QuestionSubmitEntity.builder()
@@ -84,4 +82,21 @@ public class QuestionController implements IQuestionController {
                         .build())
                 .build();
     }
+
+    @Override
+    @RequestMapping(value = "reset_count", method = RequestMethod.POST)
+    public Response<Object> resetRemainCount() throws Exception {
+
+        IStatusService.resetRemainCount();
+
+        lodsWebSocketHandler.sendMessage(IStatusService.getCurrentStatus());
+
+        return Response.builder()
+                .code(ResponseCode.SUCCESS.getCode())
+                .info(ResponseCode.SUCCESS.getInfo())
+                .data(null)
+                .build();
+    }
+
+
 }

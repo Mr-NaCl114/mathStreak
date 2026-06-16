@@ -1,5 +1,6 @@
 package com.lods.trigger.http;
 
+import com.lods.api.IAIAnswerController;
 import com.lods.api.dto.AIAnswerReqInfo;
 import com.lods.api.response.AIAnswerMsgRes;
 import com.lods.api.response.Response;
@@ -16,11 +17,12 @@ import org.springframework.web.bind.annotation.*;
 @RestController()
 @CrossOrigin("*")
 @RequestMapping("/api/game/ai_answer")
-public class AIAnswerController {
+public class AIAnswerController implements IAIAnswerController {
 
     @Resource
     private IAIAnswerService IAIAnswerService;
 
+    @Override
     @RequestMapping(value = "generate", method = RequestMethod.POST)
     public Response<AIAnswerMsgRes> Generate(@RequestBody AIAnswerReqInfo info) throws Exception {
 
@@ -38,6 +40,7 @@ public class AIAnswerController {
                 .build();
     }
 
+    @Override
     @RequestMapping(value = "/inside/new_generate", method = RequestMethod.POST)
     public Response<AIAnswerMsgRes> newGenerate() throws Exception {
 
