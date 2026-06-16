@@ -48,5 +48,11 @@ public class StatusRepository implements IStatusRepository {
 
         return statusOpt.getRemainingCount();
     }
+
+    @Override
+    public void resetRemainCount() {
+
+        statusOpt.resetRemainCount();
+    }
 }
 

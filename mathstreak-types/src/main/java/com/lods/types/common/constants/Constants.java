@@ -8,32 +8,6 @@ public class Constants {
 
     @AllArgsConstructor
     @Getter
-    public enum AnswerRes {
-        RIGHT(1000, "正确"),
-        FALI(1001, "错误"),
-        OTHER_FAULT(1002, "失败");
-
-        private final Integer code;
-        private final String msg;
-
-    }
-
-    @AllArgsConstructor
-    @Getter
-    public enum DifficultyLevel {
-        ELEMENTARY(1, "小学"),
-        MIDDLE_SCHOOL(2, "初中"),
-        HIGH_SCHOOL(3, "高中"),
-        UNIVERSITY(4, "大学"),
-        HELL(5, "地狱");
-
-        private final int level;
-        private final String desc;
-
-    }
-
-    @AllArgsConstructor
-    @Getter
     public enum TypeOfQuestion {
         CHOICE(1,"选择题"),
         GAP(2,"填空题");
@@ -64,5 +38,13 @@ public class Constants {
 
         private final Integer code;
         private final String value;
+    }
+
+    @AllArgsConstructor
+    @Getter
+    public enum RemainCount {
+        TODAY_MAX_COUNT(99);
+
+        private final Integer count;
     }
 }

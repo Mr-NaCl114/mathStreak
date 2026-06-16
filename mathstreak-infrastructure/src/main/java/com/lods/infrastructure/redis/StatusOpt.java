@@ -41,5 +41,10 @@ public class StatusOpt {
 
         return parseInt.parseInt(stringRedisTemplate.opsForValue().get(Constants.WebStatus.REMAIN_COUNT.getValue()));
     }
+
+    public void resetRemainCount() {
+
+        stringRedisTemplate.opsForValue().set(Constants.WebStatus.REMAIN_COUNT.getValue(), String.valueOf(Constants.RemainCount.TODAY_MAX_COUNT.getCount()));
+    }
 }
 

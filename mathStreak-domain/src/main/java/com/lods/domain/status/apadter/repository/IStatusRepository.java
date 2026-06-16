@@ -12,4 +12,6 @@ public interface IStatusRepository {
     void initCurrentAnswer();
 
     int getRemainingCount();
+
+    void resetRemainCount();
 }

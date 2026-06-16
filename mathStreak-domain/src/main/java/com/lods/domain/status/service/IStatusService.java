@@ -11,4 +11,6 @@ public interface IStatusService {
     void initCurrentAnswer();
 
     int getRemainingCount();
+
+    void resetRemainCount();
 }
