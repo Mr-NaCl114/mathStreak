@@ -79,6 +79,7 @@ public class QuestionController implements IQuestionController {
                 .data(CheckRes.builder()
                         .isCorrect(res.getIsCorrect())
                         .correctLatexAnswer(res.getCorrectLatexAnswer())
+                        .sign(res.getSign())
                         .build())
                 .build();
     }

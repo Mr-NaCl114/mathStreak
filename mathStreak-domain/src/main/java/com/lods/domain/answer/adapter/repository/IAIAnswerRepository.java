@@ -23,4 +23,6 @@ public interface IAIAnswerRepository {
     void gapBatchUpdateAIAnswer(List<AIAnswerInsertEntity> list);
 
     String getAnswerByQuestionId(AIAnswerGetQuestionReqEntity aiAnswerGetQuestionReqEntity);
+
+    boolean getAnswerSign(String sign);
 }

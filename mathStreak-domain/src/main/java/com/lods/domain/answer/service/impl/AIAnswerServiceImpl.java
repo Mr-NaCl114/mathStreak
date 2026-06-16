@@ -7,6 +7,8 @@ import com.lods.domain.answer.model.entity.AIAnswerInsertEntity;
 import com.lods.domain.answer.model.entity.AIAnswerMsgEntity;
 import com.lods.domain.answer.service.IAIAnswerService;
 import com.lods.domain.question.model.valobj.QuestionVO;
+import com.lods.types.common.enums.ResponseCode;
+import com.lods.types.common.exception.AppException;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
 import jakarta.annotation.Resource;
@@ -206,9 +208,15 @@ public class AIAnswerServiceImpl implements IAIAnswerService {
     @Override
     public AIAnswerMsgEntity generate(AIAnswerGetQuestionReqEntity aiAnswerGetQuestionReqEntity) {
 
+        if (aiAnswerGetQuestionReqEntity.getSign() == null) {
+            throw new AppException(ResponseCode.ILLEGAL_PARAMETER.getCode(), ResponseCode.ILLEGAL_PARAMETER.getInfo());
+        } else if (!aiAnswerRepository.getAnswerSign(aiAnswerGetQuestionReqEntity.getSign())) {
+            throw new AppException(ResponseCode.ILLEGAL_PARAMETER.getCode(), ResponseCode.ILLEGAL_PARAMETER.getInfo());
+        }
+
         // 延迟5~10秒，使用 CompletableFuture.delayedExecutor 不阻塞其他线程
         long delaySeconds = 2 + (long) (Math.random() * 6);
-        log.info("获取已生成回答：{}，等待：{}", aiAnswerGetQuestionReqEntity, delaySeconds);
+        log.info("验证sign, 获取已生成回答：{}, 等待：{}", aiAnswerGetQuestionReqEntity, delaySeconds);
         return CompletableFuture.supplyAsync(() ->
                         AIAnswerMsgEntity.builder()
                                 .msg(aiAnswerRepository.getAnswerByQuestionId(aiAnswerGetQuestionReqEntity))
@@ -219,10 +227,14 @@ public class AIAnswerServiceImpl implements IAIAnswerService {
 
     // ===================== Conversation 超时清理 =====================
 
-    /** conversation 最后访问时间记录 */
+    /**
+     * conversation 最后访问时间记录
+     */
     private final Map<String, Long> conversationLastAccess = new ConcurrentHashMap<>();
 
-    /** 超时阈值：30分钟未访问则清理（单位：毫秒） */
+    /**
+     * 超时阈值：30分钟未访问则清理（单位：毫秒）
+     */
     private static final long CONVERSATION_TIMEOUT_MS = 10 * 60 * 1000L;
 
     /**
@@ -249,7 +261,9 @@ public class AIAnswerServiceImpl implements IAIAnswerService {
         }
     }
 
-    /** 持有底层 MessageWindowChatMemory 引用，用于清理 */
+    /**
+     * 持有底层 MessageWindowChatMemory 引用，用于清理
+     */
     private MessageWindowChatMemory chatMemoryDelegate;
 
     /**

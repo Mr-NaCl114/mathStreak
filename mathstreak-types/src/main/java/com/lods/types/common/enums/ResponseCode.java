@@ -19,6 +19,7 @@ public enum ResponseCode {
     REMAIN_COUNT_ZERO("1002","剩余次数不足");
 
 
+
     private String code;
     private String info;
 

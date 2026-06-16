@@ -2,7 +2,6 @@ package com.lods.types.common.constants;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 public class Constants {
 
@@ -46,5 +45,13 @@ public class Constants {
         TODAY_MAX_COUNT(99);
 
         private final Integer count;
+    }
+
+    @AllArgsConstructor
+    @Getter
+    public enum AnswerSignKey {
+        SIGN_PREFIX("answerSign:");
+
+        private final String value;
     }
 }

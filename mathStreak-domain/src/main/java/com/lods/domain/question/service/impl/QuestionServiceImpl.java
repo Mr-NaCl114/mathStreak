@@ -7,8 +7,6 @@ import com.lods.domain.question.model.entity.QuestionSubmitEntity;
 import com.lods.domain.question.model.valobj.QuestionVO;
 import com.lods.domain.question.service.IQuestionService;
 import com.lods.types.common.constants.Constants;
-import com.lods.types.common.enums.ResponseCode;
-import com.lods.types.common.exception.AppException;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.matheclipse.core.eval.ExprEvaluator;
@@ -40,10 +38,9 @@ public class QuestionServiceImpl implements IQuestionService {
 
     @Override
     public QuestionCorrectEntity submit(QuestionSubmitEntity questionSubmitEntity) {
-
-        log.info("上传为 {}, 提交的答案： {}", questionSubmitEntity.getType(), questionSubmitEntity.getAnswerContent());
-        //生成随机UUID标识
-
+        //  在redis创建标识
+        String sign = questionRepository.createAnswerSign();
+        log.info("上传为 {}, 提交的答案: {}, 创建标识: {}", questionSubmitEntity.getType(), questionSubmitEntity.getAnswerContent(), sign);
 
         // 选择题
         if (questionSubmitEntity.getType().equals(Constants.TypeOfQuestion.CHOICE.getCode())) {
@@ -56,6 +53,7 @@ public class QuestionServiceImpl implements IQuestionService {
             return QuestionCorrectEntity.builder()
                     .isCorrect(res)
                     .correctLatexAnswer(questionVO.getAnswer())
+                    .sign(sign)
                     .build();
         }
 
@@ -86,6 +84,7 @@ public class QuestionServiceImpl implements IQuestionService {
         return QuestionCorrectEntity.builder()
                 .isCorrect(res)
                 .correctLatexAnswer(questions.getAnswer())
+                .sign(sign)
                 .build();
     }
 }

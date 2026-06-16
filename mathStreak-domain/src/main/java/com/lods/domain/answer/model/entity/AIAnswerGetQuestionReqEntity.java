@@ -13,4 +13,5 @@ public class AIAnswerGetQuestionReqEntity {
 
     private Integer type;
     private Integer questionId;
+    private String sign;
 }

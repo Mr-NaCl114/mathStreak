@@ -25,4 +25,6 @@ public class CheckRes {
 
     // 如果导致连胜中断，返回新的失败记录用于更新地图
 //    private FailureLogDTO newFailureLog;
+
+    private String sign;
 }

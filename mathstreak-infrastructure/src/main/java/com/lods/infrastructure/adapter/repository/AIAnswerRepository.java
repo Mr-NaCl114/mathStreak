@@ -7,6 +7,7 @@ import com.lods.domain.question.model.valobj.QuestionVO;
 import com.lods.infrastructure.dao.IQuestionChoiceDao;
 import com.lods.infrastructure.dao.IQuestionGapDao;
 import com.lods.infrastructure.dao.po.Question;
+import com.lods.infrastructure.redis.AnswerSign;
 import com.lods.types.common.constants.Constants;
 import com.lods.types.common.enums.ResponseCode;
 import com.lods.types.common.exception.AppException;
@@ -25,6 +26,8 @@ public class AIAnswerRepository implements IAIAnswerRepository {
     private IQuestionChoiceDao choiceQuestionDao;
     @Resource
     private IQuestionGapDao gapQuestionDao;
+    @Resource
+    private AnswerSign answerSign;
 
     @Override
     public QuestionVO getQuestionById(AIAnswerGetQuestionReqEntity aiAnswerGetQuestionReqEntity) {
@@ -33,9 +36,9 @@ public class AIAnswerRepository implements IAIAnswerRepository {
         Integer type = aiAnswerGetQuestionReqEntity.getType();
         Question question;
 
-        if(Objects.equals(type, Constants.TypeOfQuestion.CHOICE.getCode())){
+        if (Objects.equals(type, Constants.TypeOfQuestion.CHOICE.getCode())) {
             question = choiceQuestionDao.queryQuestionById(id);
-        } else if(Objects.equals(type, Constants.TypeOfQuestion.GAP.getCode())){
+        } else if (Objects.equals(type, Constants.TypeOfQuestion.GAP.getCode())) {
             question = gapQuestionDao.queryQuestionById(id);
         } else {
             throw new AppException(ResponseCode.QUESTION_NOT_FOUND.getCode(), ResponseCode.QUESTION_NOT_FOUND.getInfo());
@@ -104,12 +107,18 @@ public class AIAnswerRepository implements IAIAnswerRepository {
     @Override
     public String getAnswerByQuestionId(AIAnswerGetQuestionReqEntity aiAnswerGetQuestionReqEntity) {
 
-        if(aiAnswerGetQuestionReqEntity.getType().equals(Constants.TypeOfQuestion.CHOICE.getCode())){
+        if (aiAnswerGetQuestionReqEntity.getType().equals(Constants.TypeOfQuestion.CHOICE.getCode())) {
             return choiceQuestionDao.getAnswerByQuestionId(aiAnswerGetQuestionReqEntity.getQuestionId());
         } else if (aiAnswerGetQuestionReqEntity.getType().equals(Constants.TypeOfQuestion.GAP.getCode())) {
             return gapQuestionDao.getAnswerByQuestionId(aiAnswerGetQuestionReqEntity.getQuestionId());
         }
 
         return null;
+    }
+
+    @Override
+    public boolean getAnswerSign(String sign) {
+
+        return answerSign.readSign(sign);
     }
 }

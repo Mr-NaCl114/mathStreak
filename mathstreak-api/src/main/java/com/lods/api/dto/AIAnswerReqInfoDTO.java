@@ -7,8 +7,9 @@ import lombok.NoArgsConstructor;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class AIAnswerReqInfo {
+public class AIAnswerReqInfoDTO {
 
     private Integer type;
     private Integer questionId;
+    private String sign;
 }

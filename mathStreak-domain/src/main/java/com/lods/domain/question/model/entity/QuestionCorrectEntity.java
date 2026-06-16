@@ -1,5 +1,6 @@
 package com.lods.domain.question.model.entity;
 
+import com.lods.domain.question.model.valobj.QuestionVO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,4 +14,5 @@ public class QuestionCorrectEntity {
 
     private Boolean isCorrect;
     private String correctLatexAnswer;
+    private String sign;
 }

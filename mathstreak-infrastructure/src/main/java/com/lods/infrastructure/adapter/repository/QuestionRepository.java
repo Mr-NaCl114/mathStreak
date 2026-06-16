@@ -5,6 +5,7 @@ import com.lods.domain.question.model.valobj.QuestionVO;
 import com.lods.infrastructure.dao.IQuestionChoiceDao;
 import com.lods.infrastructure.dao.IQuestionGapDao;
 import com.lods.infrastructure.dao.po.Question;
+import com.lods.infrastructure.redis.AnswerSign;
 import com.lods.infrastructure.redis.StreakCount;
 import com.lods.types.common.constants.Constants;
 import com.lods.types.common.enums.ResponseCode;
@@ -13,6 +14,7 @@ import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
+import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 
 @Slf4j
@@ -25,6 +27,8 @@ public class QuestionRepository implements IQuestionRepository {
     private IQuestionGapDao gapQuestionDao;
     @Resource
     private StreakCount streakCount;
+    @Resource
+    private AnswerSign answerSign;
 
     @Override
     public QuestionVO getRandomQuestion() {
@@ -99,5 +103,11 @@ public class QuestionRepository implements IQuestionRepository {
     @Override
     public void updateStreakCountByIsCorrect(boolean isCorrect) {
         streakCount.isCorrect(isCorrect);
+    }
+
+    @Override
+    public String createAnswerSign() {
+
+        return answerSign.writeSign();
     }
 }

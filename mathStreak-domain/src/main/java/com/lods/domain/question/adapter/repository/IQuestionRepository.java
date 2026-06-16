@@ -12,4 +12,5 @@ public interface IQuestionRepository {
 
     void updateStreakCountByIsCorrect(boolean isCorrect);
 
+    String createAnswerSign();
 }
