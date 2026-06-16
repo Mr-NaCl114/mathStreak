@@ -6,7 +6,7 @@ import com.lods.api.response.Response;
 import com.lods.domain.answer.model.entity.AIAnswerGetQuestionReqEntity;
 import com.lods.domain.answer.model.entity.AIAnswerMsgEntity;
 import com.lods.domain.answer.service.IAIAnswerService;
-import com.lods.types.common.constants.Constants;
+import com.lods.types.common.enums.ResponseCode;
 import com.lods.types.common.exception.AppException;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -30,8 +30,8 @@ public class AIAnswerController {
                 .build());
 
         return Response.<AIAnswerMsgRes>builder()
-                .code(Constants.ResponseCode.SUCCESS.getCode())
-                .info(Constants.ResponseCode.SUCCESS.getMsg())
+                .code(ResponseCode.SUCCESS.getCode())
+                .info(ResponseCode.SUCCESS.getInfo())
                 .data(AIAnswerMsgRes.builder()
                         .msg(entity.getMsg())
                         .build())
@@ -48,8 +48,8 @@ public class AIAnswerController {
         }
 
         return Response.<AIAnswerMsgRes>builder()
-                .code(Constants.ResponseCode.SUCCESS.getCode())
-                .info(Constants.ResponseCode.SUCCESS.getMsg())
+                .code(ResponseCode.SUCCESS.getCode())
+                .info(ResponseCode.SUCCESS.getInfo())
                 .data(null)
                 .build();
     }

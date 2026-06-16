@@ -8,7 +8,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 
 @Component
-public class StatusUpdate {
+public class StatusOpt {
 
     ParseInt parseInt = new ParseInt();
     @Resource
@@ -35,6 +35,11 @@ public class StatusUpdate {
     public void initCurrentAnswer() {
 
         stringRedisTemplate.opsForValue().set(Constants.WebStatus.CURRENT_ANSWER.getValue(), String.valueOf(0));
+    }
+
+    public int getRemainingCount() {
+
+        return parseInt.parseInt(stringRedisTemplate.opsForValue().get(Constants.WebStatus.REMAIN_COUNT.getValue()));
     }
 }
 

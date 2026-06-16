@@ -3,7 +3,7 @@ package com.lods.trigger.http;
 import com.lods.api.response.Response;
 import com.lods.api.response.SignRes;
 import com.lods.domain.sign.service.ISignService;
-import com.lods.types.common.constants.Constants;
+import com.lods.types.common.enums.ResponseCode;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -30,8 +30,8 @@ public class SignController implements com.lods.api.SignController {
         }
 
         return Response.builder()
-                .code(Constants.ResponseCode.SUCCESS.getCode())
-                .info(Constants.ResponseCode.SUCCESS.getMsg())
+                .code(ResponseCode.SUCCESS.getCode())
+                .info(ResponseCode.SUCCESS.getInfo())
                 .data(SignRes.builder()
                         .sign(signService.signBuild(stringMap))
                         .build())

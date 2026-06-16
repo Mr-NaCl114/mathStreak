@@ -5,6 +5,7 @@ import com.lods.api.response.Response;
 import com.lods.domain.status.model.entity.CurrentAnswerChangeEntity;
 import com.lods.domain.status.service.IStatusService;
 import com.lods.types.common.constants.Constants;
+import com.lods.types.common.enums.ResponseCode;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -67,8 +68,8 @@ public class LodsWebSocketHandler extends TextWebSocketHandler {
         //  log.info("当前在线连接数：{}", sessionMap.size());
         for (WebSocketSession session : sessionMap.values()) {
             String json = new ObjectMapper().writeValueAsString(Response.builder()
-                    .code(Constants.ResponseCode.SUCCESS.getCode())
-                    .info(Constants.ResponseCode.SUCCESS.getMsg())
+                    .code(ResponseCode.SUCCESS.getCode())
+                    .info(ResponseCode.SUCCESS.getInfo())
                     .data(message)
                     .build());
             session.sendMessage(new TextMessage(json));

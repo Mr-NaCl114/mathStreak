@@ -78,16 +78,11 @@ public class QuestionServiceImpl implements IQuestionService {
             }
         }
 
-        try {
-            // 更新状态
-            questionRepository.updateStreakCountByIsCorrect(res);
+        questionRepository.updateStreakCountByIsCorrect(res);
 
-            return QuestionCorrectEntity.builder()
-                    .isCorrect(res)
-                    .correctLatexAnswer(questions.getAnswer())
-                    .build();
-        } catch (Exception e) {
-            throw new AppException(ResponseCode.UN_ERROR.getCode(), ResponseCode.UN_ERROR.getInfo());
-        }
+        return QuestionCorrectEntity.builder()
+                .isCorrect(res)
+                .correctLatexAnswer(questions.getAnswer())
+                .build();
     }
 }

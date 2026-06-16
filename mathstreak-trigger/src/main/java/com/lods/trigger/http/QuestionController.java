@@ -11,7 +11,7 @@ import com.lods.domain.question.model.entity.QuestionSubmitEntity;
 import com.lods.domain.question.service.IQuestionService;
 import com.lods.domain.status.service.IStatusService;
 import com.lods.trigger.listener.LodsWebSocketHandler;
-import com.lods.types.common.constants.Constants;
+import com.lods.types.common.enums.ResponseCode;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -33,15 +33,21 @@ public class QuestionController implements IQuestionController {
 
     @Override
     @GetMapping("current-question")
-    public Response<Object> currentQuestion() throws Exception{
+    public Response<Object> currentQuestion() throws Exception {
 
-//        lodsWebSocketHandler.sendMessage(IStatusService.getCurrentStatus());
+        if (IStatusService.getRemainingCount() == 0) {
+            return Response.builder()
+                    .code(ResponseCode.SUCCESS.getCode())
+                    .info(ResponseCode.SUCCESS.getInfo())
+                    .data(ResponseCode.REMAIN_COUNT_ZERO)
+                    .build();
+        }
 
         QuestionDataResEntity question = IQuestionService.getQuestion();
 
         return Response.builder()
-                .code(Constants.ResponseCode.SUCCESS.getCode())
-                .info(Constants.ResponseCode.SUCCESS.getMsg())
+                .code(ResponseCode.SUCCESS.getCode())
+                .info(ResponseCode.SUCCESS.getInfo())
                 .data(QuestionRes.builder()
                         .type(question.getType())
                         .questionId(question.getQuestionId())
@@ -57,7 +63,7 @@ public class QuestionController implements IQuestionController {
 
     @Override
     @PostMapping("submit")
-    public Response<Object> submit(@RequestBody SubmitDTO submitDTO) throws IOException {
+    public Response<Object> submit(@RequestBody SubmitDTO submitDTO) throws Exception {
 
         QuestionSubmitEntity submit = QuestionSubmitEntity.builder()
                 .type(submitDTO.getType())
@@ -70,8 +76,8 @@ public class QuestionController implements IQuestionController {
         lodsWebSocketHandler.sendMessage(IStatusService.getCurrentStatus());
 
         return Response.builder()
-                .code(Constants.ResponseCode.SUCCESS.getCode())
-                .info(Constants.ResponseCode.SUCCESS.getMsg())
+                .code(ResponseCode.SUCCESS.getCode())
+                .info(ResponseCode.SUCCESS.getInfo())
                 .data(CheckRes.builder()
                         .isCorrect(res.getIsCorrect())
                         .correctLatexAnswer(res.getCorrectLatexAnswer())

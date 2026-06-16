@@ -39,4 +39,10 @@ public class StatusService implements IStatusService {
 
         statusRepository.initCurrentAnswer();
     }
+
+    @Override
+    public int getRemainingCount() {
+
+        return statusRepository.getRemainingCount();
+    }
 }

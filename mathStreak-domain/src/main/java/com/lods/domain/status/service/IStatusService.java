@@ -9,4 +9,6 @@ public interface IStatusService {
     void updateCurrentAnswer(CurrentAnswerChangeEntity currentAnswerChangeEntity);
 
     void initCurrentAnswer();
+
+    int getRemainingCount();
 }

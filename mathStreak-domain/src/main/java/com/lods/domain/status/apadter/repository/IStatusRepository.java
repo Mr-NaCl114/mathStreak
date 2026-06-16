@@ -10,4 +10,6 @@ public interface IStatusRepository {
     void updateCurrentAnswer(CurrentAnswerChangeEntity currentAnswerChangeEntity);
 
     void initCurrentAnswer();
+
+    int getRemainingCount();
 }

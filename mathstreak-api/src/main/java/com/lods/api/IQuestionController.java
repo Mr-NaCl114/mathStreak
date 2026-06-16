@@ -9,5 +9,5 @@ public interface IQuestionController {
 
     Response<Object> currentQuestion() throws Exception;
 
-    Response<Object> submit(SubmitDTO submitDTO) throws IOException;
+    Response<Object> submit(SubmitDTO submitDTO) throws Exception;
 }

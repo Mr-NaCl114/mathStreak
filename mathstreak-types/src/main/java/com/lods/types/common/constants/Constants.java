@@ -7,19 +7,6 @@ import lombok.NoArgsConstructor;
 public class Constants {
 
     @AllArgsConstructor
-    @NoArgsConstructor
-    @Getter
-    public enum ResponseCode {
-        SUCCESS("0000", "success"),
-        UN_ERROR("0001", "fail"),
-        ILLEGAL_PARAMETER("0002", "非法参数");
-
-        private String code;
-        private String msg;
-
-    }
-
-    @AllArgsConstructor
     @Getter
     public enum AnswerRes {
         RIGHT(1000, "正确"),
