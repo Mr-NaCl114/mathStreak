@@ -24,8 +24,6 @@ spring:
     timeout-per-shutdown-phase: 30s
   datasource:
     mysql:
-      username: math
-      password: 7891919
       # 本地开发连接 Docker MySQL（宿主机端口 3308 映射到容器 3306）
       url: jdbc:mysql://127.0.0.1:3306/mathstreak?useUnicode=true&characterEncoding=utf8&autoReconnect=true&zeroDateTimeBehavior=convertToNull&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true
       driver-class-name: com.mysql.cj.jdbc.Driver
@@ -38,9 +36,6 @@ spring:
 
     pgvector:
       driver-class-name: org.postgresql.Driver
-      username: postgres
-      password: 7891919
-      url: jdbc:postgresql://193.112.94.229:5434/ai-rag-knowledge
       type: com.zaxxer.hikari.HikariDataSource
       hikari:
         maximum-pool-size: 5
@@ -49,10 +44,6 @@ spring:
         connection-timeout: 30000
   ai:
     openai:
-      base-url: https://api.deepseek.com/
-#      base-url: https://api.xiaomimimo.com/v1
-      api-key: sk-4a7604bd802940c18d2597c49b316f3e
-#      api-key: sk-c1rmr5x8s8bxcoppg7u2t2nzh93kwybbn9ba7ivohvlk190m
       timeout: 120000
       chat:
         model: deepseek-v4-flash
@@ -61,9 +52,6 @@ spring:
   data:
     redis:
       # 本地开发连接 Docker Redis
-      host: 127.0.0.1
-      port: 6379
-      password: 114514
       database: 1
 
 mybatis:
