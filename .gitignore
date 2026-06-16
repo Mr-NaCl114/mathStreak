@@ -34,3 +34,7 @@ build/
 
 ### Custom Inclusions/Exclusions ###
 mathstreak-types/src/main/java/com/lods/types/common/util/SignBuild.java
+
+### Profile Config ###
+mathstreak-app/src/main/resources/application-dev.yml
+mathstreak-app/src/main/resources/application-pro.yml
