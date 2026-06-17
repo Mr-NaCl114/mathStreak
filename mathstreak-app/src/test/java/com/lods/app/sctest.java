@@ -1,5 +1,11 @@
 package com.lods.app;
 
+import com.lods.domain.answer.model.entity.AIAnswerGetQuestionReqEntity;
+import com.lods.domain.answer.model.entity.AIAnswerMsgEntity;
+import com.lods.domain.answer.service.IAIAnswerService;
+import com.lods.domain.question.model.entity.QuestionCorrectEntity;
+import com.lods.domain.question.model.entity.QuestionSubmitEntity;
+import com.lods.domain.question.service.IQuestionService;
 import com.lods.domain.status.service.IStatusService;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -15,9 +21,32 @@ public class sctest {
 
     @Resource
     private IStatusService statusService;
+    @Resource
+    private IAIAnswerService aiAnswerService;
+    @Resource
+    private IQuestionService questionService;
 
     @Test
     public void testResetRemainCount() {
+
         statusService.resetRemainCount();
+    }
+
+//    @Test
+    public void newGen(){
+
+        QuestionCorrectEntity submit = questionService.submit(QuestionSubmitEntity.builder()
+                .type(1)
+                .answerContent("123")
+                .questionId(12)
+                .build());
+
+        AIAnswerMsgEntity res = aiAnswerService.newGenerate(AIAnswerGetQuestionReqEntity.builder()
+                .type(1)
+                .questionId(22)
+                .sign(submit.getSign())
+                .build());
+
+        log.info("res:{}", res);
     }
 }

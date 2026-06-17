@@ -6,9 +6,9 @@ public interface IQuestionRepository {
 
     QuestionVO getRandomQuestion();
 
-    QuestionVO getQuestionChoiceById(int Id);
+    QuestionVO getQuestionChoiceAnswerById(int Id);
 
-    QuestionVO getQuestionGapById(int Id);
+    QuestionVO getQuestionGapAnswerById(int Id);
 
     void updateStreakCountByIsCorrect(boolean isCorrect);
 

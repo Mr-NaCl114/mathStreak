@@ -44,7 +44,7 @@ public class QuestionServiceImpl implements IQuestionService {
 
         // 选择题
         if (questionSubmitEntity.getType().equals(Constants.TypeOfQuestion.CHOICE.getCode())) {
-            QuestionVO questionVO = questionRepository.getQuestionChoiceById(questionSubmitEntity.getQuestionId());
+            QuestionVO questionVO = questionRepository.getQuestionChoiceAnswerById(questionSubmitEntity.getQuestionId());
             boolean res = questionVO.getAnswer().equals(questionSubmitEntity.getAnswerContent());
 
             //  更新状态
@@ -58,7 +58,7 @@ public class QuestionServiceImpl implements IQuestionService {
         }
 
         // 填空题
-        QuestionVO questions = questionRepository.getQuestionGapById(questionSubmitEntity.getQuestionId());
+        QuestionVO questions = questionRepository.getQuestionGapAnswerById(questionSubmitEntity.getQuestionId());
         boolean res = false;
 
         // 1. 优先进行字符串完全匹配（处理类似(4,4)无法被ExprEvaluator解析的情况）

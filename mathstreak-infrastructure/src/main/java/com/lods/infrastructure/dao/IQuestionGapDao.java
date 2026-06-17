@@ -15,6 +15,8 @@ public interface IQuestionGapDao {
 
     Question queryQuestionById(int id);
 
+    Question queryQuestionAnswerById(int id);
+
     List<Question> getRangeQuestion(int offset, int pageSize);
 
     void batchUpdateAIAnswer(List<AIAnswerInsertEntity> list);

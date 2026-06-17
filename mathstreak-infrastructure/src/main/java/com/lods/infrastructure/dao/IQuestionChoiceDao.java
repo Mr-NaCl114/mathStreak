@@ -16,6 +16,8 @@ public interface IQuestionChoiceDao {
 
     Question queryQuestionById(int id);
 
+    Question queryQuestionAnswerById(int id);
+
     List<Question> getRangeQuestion(@Param("offset") int offset, @Param("pageSize") int pageSize);
 
     void batchUpdateAIAnswer(List<AIAnswerInsertEntity> list);

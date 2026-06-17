@@ -14,19 +14,23 @@
     </resultMap>
 
     <select id="getCurrentQuestion" resultMap="GapQuestionMap">
-        select * from gap where id = #{ramId}
+        select id, question, answer, diff from gap where id = #{ramId}
     </select>
 
     <select id="getTotal" resultMap="GapQuestionMap">
-        select count(*) AS total_rows FROM gap;
+        select count(id) AS total_rows FROM gap;
     </select>
 
     <select id="queryQuestionById" resultMap="GapQuestionMap">
-        select * from gap where id = #{questionId}
+        select id, question, answer, diff from gap where id = #{questionId}
+    </select>
+
+    <select id="queryQuestionAnswerById" resultMap="GapQuestionMap">
+        select answer from gap where id = #{questionId}
     </select>
 
     <select id="getRangeQuestion" resultMap="GapQuestionMap">
-        select * from gap limit #{pageSize} offset #{offset}
+        select id, question, answer from gap limit #{pageSize} offset #{offset}
     </select>
 
     <update id="batchUpdateAIAnswer" parameterType="java.util.List">

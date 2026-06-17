@@ -82,6 +82,12 @@ public class AIAnswerServiceImpl implements IAIAnswerService {
     @Override
     public AIAnswerMsgEntity newGenerate(AIAnswerGetQuestionReqEntity aiAnswerGetQuestionReqEntity) {
 
+        if (aiAnswerGetQuestionReqEntity.getSign() == null) {
+            throw new AppException(ResponseCode.ILLEGAL_PARAMETER.getCode(), ResponseCode.ILLEGAL_PARAMETER.getInfo());
+        } else if (!aiAnswerRepository.getAnswerSign(aiAnswerGetQuestionReqEntity.getSign())) {
+            throw new AppException(ResponseCode.ILLEGAL_PARAMETER.getCode(), ResponseCode.ILLEGAL_PARAMETER.getInfo());
+        }
+
         QuestionVO queryQuestion = aiAnswerRepository.getQuestionById(aiAnswerGetQuestionReqEntity);
         AIAnswerGetQuestionEntity questionEntity = AIAnswerGetQuestionEntity.builder()
                 .description(queryQuestion.getDescription())

@@ -55,37 +55,27 @@ public class QuestionRepository implements IQuestionRepository {
                 .optB(question.getOptB())
                 .optC(question.getOptC())
                 .optD(question.getOptD())
-                .answer(question.getAnswer())
                 .difficultyLevel(question.getDifficultyLevel())
-                .total(question.getTotal())
                 .build();
     }
 
     @Override
-    public QuestionVO getQuestionChoiceById(int Id) {
-        Question question = choiceQuestionDao.queryQuestionById(Id);
+    public QuestionVO getQuestionChoiceAnswerById(int Id) {
+        Question question = choiceQuestionDao.queryQuestionAnswerById(Id);
 
         if(question == null){
             throw new AppException(ResponseCode.QUESTION_NOT_FOUND.getCode(), ResponseCode.QUESTION_NOT_FOUND.getInfo());
         }
 
         return QuestionVO.builder()
-                .questionId(question.getQuestionId())
-                .description(question.getDescription())
-                .optA(question.getOptA())
-                .optB(question.getOptB())
-                .optC(question.getOptC())
-                .optD(question.getOptD())
                 .answer(question.getAnswer())
-                .difficultyLevel(question.getDifficultyLevel())
-                .total(question.getTotal())
                 .build();
 
     }
 
     @Override
-    public QuestionVO getQuestionGapById(int Id) {
-        Question question = gapQuestionDao.queryQuestionById(Id);
+    public QuestionVO getQuestionGapAnswerById(int Id) {
+        Question question = gapQuestionDao.queryQuestionAnswerById(Id);
 
         if(question == null){
             throw new AppException(ResponseCode.QUESTION_NOT_FOUND.getCode(), ResponseCode.QUESTION_NOT_FOUND.getInfo());
@@ -96,7 +86,6 @@ public class QuestionRepository implements IQuestionRepository {
                 .description(question.getDescription())
                 .answer(question.getAnswer())
                 .difficultyLevel(question.getDifficultyLevel())
-                .total(question.getTotal())
                 .build();
     }
 

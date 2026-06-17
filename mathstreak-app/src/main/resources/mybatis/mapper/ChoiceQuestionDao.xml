@@ -18,19 +18,23 @@
     </resultMap>
 
     <select id="getCurrentQuestion" resultMap="ChoiceQuestionMap">
-        select * from choice where id = #{id}
+        select id, question, opt_a, opt_b, opt_c, opt_d, diff from choice where id = #{id}
     </select>
 
     <select id="getTotal" resultMap="ChoiceQuestionMap">
-        select count(*) AS total_rows FROM choice;
+        select count(id) AS total_rows FROM choice;
     </select>
 
     <select id="queryQuestionById" resultMap="ChoiceQuestionMap">
-        select * from choice where id = #{questionId}
+        select id, question, opt_a, opt_b, opt_c, opt_d, answer from choice where id = #{questionId}
+    </select>
+
+    <select id="queryQuestionAnswerById" resultMap="ChoiceQuestionMap">
+        select answer from choice where id = #{questionId}
     </select>
 
     <select id="getRangeQuestion" resultMap="ChoiceQuestionMap">
-        select * from choice limit #{pageSize} offset #{offset}
+        select id, question, opt_a, opt_b, opt_c, opt_d, answer from choice limit #{pageSize} offset #{offset}
     </select>
 
     <update id="batchUpdateAIAnswer" parameterType="java.util.List">
