@@ -14,7 +14,6 @@ import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
-import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 
 @Slf4j
@@ -63,7 +62,7 @@ public class QuestionRepository implements IQuestionRepository {
     public QuestionVO getQuestionChoiceAnswerById(int Id) {
         Question question = choiceQuestionDao.queryQuestionAnswerById(Id);
 
-        if(question == null){
+        if (question == null) {
             throw new AppException(ResponseCode.QUESTION_NOT_FOUND.getCode(), ResponseCode.QUESTION_NOT_FOUND.getInfo());
         }
 
@@ -77,7 +76,7 @@ public class QuestionRepository implements IQuestionRepository {
     public QuestionVO getQuestionGapAnswerById(int Id) {
         Question question = gapQuestionDao.queryQuestionAnswerById(Id);
 
-        if(question == null){
+        if (question == null) {
             throw new AppException(ResponseCode.QUESTION_NOT_FOUND.getCode(), ResponseCode.QUESTION_NOT_FOUND.getInfo());
         }
 

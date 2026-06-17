@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.lods.infrastructure.dao.IQuestionChoiceDao">
-
     <resultMap id="ChoiceQuestionMap" type="com.lods.infrastructure.dao.po.Question">
         <id column="id" property="questionId"/>
         <result column="question" property="description"/>
@@ -14,27 +13,35 @@
         <result column="total_rows" property="total"/>
         <result column="ai_answer" property="aiAnswer"/>
         <result column="analysis" property="analysis"/>
-
     </resultMap>
 
     <select id="getCurrentQuestion" resultMap="ChoiceQuestionMap">
-        select id, question, opt_a, opt_b, opt_c, opt_d, diff from choice where id = #{id}
+        select id, question, opt_a, opt_b, opt_c, opt_d, diff
+        from choice
+        where id = #{id}
     </select>
 
     <select id="getTotal" resultMap="ChoiceQuestionMap">
-        select count(id) AS total_rows FROM choice;
+        select count(id) AS total_rows
+        FROM choice;
     </select>
 
     <select id="queryQuestionById" resultMap="ChoiceQuestionMap">
-        select id, question, opt_a, opt_b, opt_c, opt_d, answer from choice where id = #{questionId}
+        select id, question, opt_a, opt_b, opt_c, opt_d, answer
+        from choice
+        where id = #{questionId}
     </select>
 
     <select id="queryQuestionAnswerById" resultMap="ChoiceQuestionMap">
-        select answer from choice where id = #{questionId}
+        select answer
+        from choice
+        where id = #{questionId}
     </select>
 
     <select id="getRangeQuestion" resultMap="ChoiceQuestionMap">
-        select id, question, opt_a, opt_b, opt_c, opt_d, answer from choice limit #{pageSize} offset #{offset}
+        select id, question, opt_a, opt_b, opt_c, opt_d, answer
+        from choice
+        limit #{pageSize} offset #{offset}
     </select>
 
     <update id="batchUpdateAIAnswer" parameterType="java.util.List">
@@ -51,6 +58,8 @@
     </update>
 
     <select id="getAnswerByQuestionId" resultType="java.lang.String">
-        select ai_answer from choice where id = #{questionId}
+        select ai_answer
+        from choice
+        where id = #{questionId}
     </select>
 </mapper>

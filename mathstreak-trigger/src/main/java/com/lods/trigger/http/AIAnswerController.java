@@ -8,7 +8,6 @@ import com.lods.domain.answer.model.entity.AIAnswerGetQuestionReqEntity;
 import com.lods.domain.answer.model.entity.AIAnswerMsgEntity;
 import com.lods.domain.answer.service.IAIAnswerService;
 import com.lods.types.common.enums.ResponseCode;
-import com.lods.types.common.exception.AppException;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;

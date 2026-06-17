@@ -16,8 +16,7 @@ public enum ResponseCode {
     ILLEGAL_PARAMETER("0002", "非法参数"),
 
     QUESTION_NOT_FOUND("1001", "题目不存在"),
-    REMAIN_COUNT_ZERO("1002","剩余次数不足");
-
+    REMAIN_COUNT_ZERO("1002", "剩余次数不足");
 
 
     private String code;

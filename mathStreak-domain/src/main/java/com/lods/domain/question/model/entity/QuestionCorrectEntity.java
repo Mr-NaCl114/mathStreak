@@ -1,6 +1,5 @@
 package com.lods.domain.question.model.entity;
 
-import com.lods.domain.question.model.valobj.QuestionVO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

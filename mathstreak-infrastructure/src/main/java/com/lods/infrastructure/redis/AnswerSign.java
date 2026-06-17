@@ -13,11 +13,7 @@ import java.util.UUID;
 @Component
 public class AnswerSign {
 
-    @Resource
-    private StringRedisTemplate stringRedisTemplate;
-
     private static final Duration SIGN_TTL = Duration.ofHours(24);
-
     private static final String LUA_READ_SIGN = """
             local key = KEYS[1]
             if redis.call('GET', key) then
@@ -27,6 +23,8 @@ public class AnswerSign {
                 return 0
             end
             """;
+    @Resource
+    private StringRedisTemplate stringRedisTemplate;
 
     public String writeSign() {
         String uuid = UUID.randomUUID().toString();

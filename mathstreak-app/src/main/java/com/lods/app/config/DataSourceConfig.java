@@ -20,14 +20,14 @@ public class DataSourceConfig {
     @Bean("mysqlDataSource")
     @Primary
     public DataSource mysqlDataSource(@Value("${spring.datasource.mysql.driver-class-name}") String driverClassName,
-                                        @Value("${spring.datasource.mysql.url}") String url,
-                                        @Value("${spring.datasource.mysql.username}") String username,
-                                        @Value("${spring.datasource.mysql.password}") String password,
-                                        @Value("${spring.datasource.mysql.hikari.maximum-pool-size:10}") int maximumPoolSize,
-                                        @Value("${spring.datasource.mysql.hikari.minimum-idle:5}") int minimumIdle,
-                                        @Value("${spring.datasource.mysql.hikari.idle-timeout:30000}") long idleTimeout,
-                                        @Value("${spring.datasource.mysql.hikari.connection-timeout:30000}") long connectionTimeout,
-                                        @Value("${spring.datasource.mysql.hikari.max-lifetime:1800000}") long maxLifetime) {
+                                      @Value("${spring.datasource.mysql.url}") String url,
+                                      @Value("${spring.datasource.mysql.username}") String username,
+                                      @Value("${spring.datasource.mysql.password}") String password,
+                                      @Value("${spring.datasource.mysql.hikari.maximum-pool-size:10}") int maximumPoolSize,
+                                      @Value("${spring.datasource.mysql.hikari.minimum-idle:5}") int minimumIdle,
+                                      @Value("${spring.datasource.mysql.hikari.idle-timeout:30000}") long idleTimeout,
+                                      @Value("${spring.datasource.mysql.hikari.connection-timeout:30000}") long connectionTimeout,
+                                      @Value("${spring.datasource.mysql.hikari.max-lifetime:1800000}") long maxLifetime) {
         // 连接池配置
         HikariDataSource dataSource = new HikariDataSource();
         dataSource.setDriverClassName(driverClassName);

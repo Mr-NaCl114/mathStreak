@@ -8,8 +8,8 @@ public class Constants {
     @AllArgsConstructor
     @Getter
     public enum TypeOfQuestion {
-        CHOICE(1,"选择题"),
-        GAP(2,"填空题");
+        CHOICE(1, "选择题"),
+        GAP(2, "填空题");
 
         private final Integer code;
         private final String type;
@@ -32,8 +32,8 @@ public class Constants {
     @AllArgsConstructor
     @Getter
     public enum CurrentAnswerChange {
-        ADD(1,"add"),
-        REDUCE(-1,"reduce");
+        ADD(1, "add"),
+        REDUCE(-1, "reduce");
 
         private final Integer code;
         private final String value;
