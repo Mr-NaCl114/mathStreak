@@ -27,6 +27,12 @@
             <version>${revision}</version>
         </dependency>
 
+<!--        MQ 依赖-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-amqp</artifactId>
+        </dependency>
+
 <!--        springboot-->
         <dependency>
             <groupId>org.springframework.boot</groupId>

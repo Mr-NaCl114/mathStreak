@@ -20,7 +20,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @Slf4j
 @Component
-public class LodsWebSocketHandler extends TextWebSocketHandler {
+public class LodsWebSocketHandlerListener extends TextWebSocketHandler {
 
     private final Map<String, WebSocketSession> sessionMap = new ConcurrentHashMap<>();
 

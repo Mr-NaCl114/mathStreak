@@ -10,7 +10,7 @@ import com.lods.domain.question.model.entity.QuestionDataResEntity;
 import com.lods.domain.question.model.entity.QuestionSubmitEntity;
 import com.lods.domain.question.service.IQuestionService;
 import com.lods.domain.status.service.IStatusService;
-import com.lods.trigger.listener.LodsWebSocketHandler;
+import com.lods.trigger.listener.LodsWebSocketHandlerListener;
 import com.lods.types.common.enums.ResponseCode;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -27,7 +27,7 @@ public class QuestionController implements IQuestionController {
     @Resource
     private IStatusService IStatusService;
     @Resource
-    private LodsWebSocketHandler lodsWebSocketHandler;
+    private LodsWebSocketHandlerListener lodsWebSocketHandlerListener;
 
     @Override
     @RequestMapping(value = "current_question", method = RequestMethod.GET)
@@ -71,7 +71,7 @@ public class QuestionController implements IQuestionController {
 
         QuestionCorrectEntity res = IQuestionService.submit(submit);
 
-        lodsWebSocketHandler.sendMessage(IStatusService.getCurrentStatus());
+        lodsWebSocketHandlerListener.sendMessage(IStatusService.getCurrentStatus());
 
         return Response.builder()
                 .code(ResponseCode.SUCCESS.getCode())
@@ -90,7 +90,7 @@ public class QuestionController implements IQuestionController {
 
         IStatusService.resetRemainCount();
 
-        lodsWebSocketHandler.sendMessage(IStatusService.getCurrentStatus());
+        lodsWebSocketHandlerListener.sendMessage(IStatusService.getCurrentStatus());
 
         return Response.builder()
                 .code(ResponseCode.SUCCESS.getCode())
