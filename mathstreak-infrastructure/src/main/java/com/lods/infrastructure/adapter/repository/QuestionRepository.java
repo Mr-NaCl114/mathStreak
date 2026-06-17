@@ -82,10 +82,7 @@ public class QuestionRepository implements IQuestionRepository {
         }
 
         return QuestionVO.builder()
-                .questionId(question.getQuestionId())
-                .description(question.getDescription())
                 .answer(question.getAnswer())
-                .difficultyLevel(question.getDifficultyLevel())
                 .build();
     }
 
