@@ -69,7 +69,11 @@ public class QuestionController implements IQuestionController {
                 .questionId(submitDTO.getQuestionId())
                 .build();
 
+        //  获取结果
         QuestionCorrectEntity res = IQuestionService.submit(submit);
+        Boolean isCorrect = res.getIsCorrect();
+
+        IStatusService.updateStreakCountByIsCorrect(isCorrect);
 
         lodsWebSocketHandlerListener.sendMessage(IStatusService.getCurrentStatus());
 
@@ -77,7 +81,7 @@ public class QuestionController implements IQuestionController {
                 .code(ResponseCode.SUCCESS.getCode())
                 .info(ResponseCode.SUCCESS.getInfo())
                 .data(CheckRes.builder()
-                        .isCorrect(res.getIsCorrect())
+                        .isCorrect(isCorrect)
                         .correctLatexAnswer(res.getCorrectLatexAnswer())
                         .sign(res.getSign())
                         .build())

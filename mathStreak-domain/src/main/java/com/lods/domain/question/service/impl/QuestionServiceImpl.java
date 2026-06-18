@@ -47,9 +47,6 @@ public class QuestionServiceImpl implements IQuestionService {
             QuestionVO questionVO = questionRepository.getQuestionChoiceAnswerById(questionSubmitEntity.getQuestionId());
             boolean res = questionVO.getAnswer().equals(questionSubmitEntity.getAnswerContent());
 
-            //  更新状态
-            questionRepository.updateStreakCountByIsCorrect(res);
-
             return QuestionCorrectEntity.builder()
                     .isCorrect(res)
                     .correctLatexAnswer(questionVO.getAnswer())
@@ -78,8 +75,6 @@ public class QuestionServiceImpl implements IQuestionService {
                 // 解析失败且字符串不匹配，则判定为错误
             }
         }
-
-        questionRepository.updateStreakCountByIsCorrect(res);
 
         return QuestionCorrectEntity.builder()
                 .isCorrect(res)

@@ -14,4 +14,6 @@ public interface IStatusRepository {
     int getRemainingCount();
 
     void resetRemainCount();
+
+    void updateStreakCountByIsCorrect(boolean isCorrect);
 }

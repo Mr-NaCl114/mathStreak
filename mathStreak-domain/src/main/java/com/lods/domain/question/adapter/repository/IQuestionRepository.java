@@ -10,7 +10,5 @@ public interface IQuestionRepository {
 
     QuestionVO getQuestionGapAnswerById(int Id);
 
-    void updateStreakCountByIsCorrect(boolean isCorrect);
-
     String createAnswerSign();
 }

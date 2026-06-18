@@ -6,7 +6,6 @@ import com.lods.infrastructure.dao.IQuestionChoiceDao;
 import com.lods.infrastructure.dao.IQuestionGapDao;
 import com.lods.infrastructure.dao.po.Question;
 import com.lods.infrastructure.redis.AnswerSign;
-import com.lods.infrastructure.redis.StreakCount;
 import com.lods.types.common.constants.Constants;
 import com.lods.types.common.enums.ResponseCode;
 import com.lods.types.common.exception.AppException;
@@ -24,8 +23,6 @@ public class QuestionRepository implements IQuestionRepository {
     private IQuestionChoiceDao choiceQuestionDao;
     @Resource
     private IQuestionGapDao gapQuestionDao;
-    @Resource
-    private StreakCount streakCount;
     @Resource
     private AnswerSign answerSign;
 
@@ -83,11 +80,6 @@ public class QuestionRepository implements IQuestionRepository {
         return QuestionVO.builder()
                 .answer(question.getAnswer())
                 .build();
-    }
-
-    @Override
-    public void updateStreakCountByIsCorrect(boolean isCorrect) {
-        streakCount.isCorrect(isCorrect);
     }
 
     @Override

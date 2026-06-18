@@ -5,6 +5,7 @@ import com.lods.domain.status.model.entity.CurrentAnswerChangeEntity;
 import com.lods.domain.status.model.valobj.GameStatusVO;
 import com.lods.infrastructure.dao.po.GameStatus;
 import com.lods.infrastructure.redis.StatusOpt;
+import com.lods.infrastructure.redis.StreakCount;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
@@ -15,6 +16,8 @@ public class StatusRepository implements IStatusRepository {
 
     @Resource
     private StatusOpt statusOpt;
+    @Resource
+    private StreakCount streakCount;
 
     @Override
     public GameStatusVO getCurrentStatus() {
@@ -53,6 +56,12 @@ public class StatusRepository implements IStatusRepository {
     public void resetRemainCount() {
 
         statusOpt.resetRemainCount();
+    }
+
+    @Override
+    public void updateStreakCountByIsCorrect(boolean isCorrect) {
+
+        streakCount.isCorrect(isCorrect);
     }
 }
 

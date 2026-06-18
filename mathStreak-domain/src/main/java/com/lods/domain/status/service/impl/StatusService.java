@@ -57,4 +57,10 @@ public class StatusService implements IStatusService {
         log.info("重置每日计数");
         statusRepository.resetRemainCount();
     }
+
+    @Override
+    public void updateStreakCountByIsCorrect(boolean isCorrect) {
+
+        statusRepository.updateStreakCountByIsCorrect(isCorrect);
+    }
 }

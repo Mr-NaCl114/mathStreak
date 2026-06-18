@@ -13,4 +13,6 @@ public interface IStatusService {
     int getRemainingCount();
 
     void resetRemainCount();
+
+    void updateStreakCountByIsCorrect(boolean isCorrect);
 }

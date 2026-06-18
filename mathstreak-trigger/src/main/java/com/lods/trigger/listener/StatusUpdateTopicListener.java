@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
-public class TeamSuccessTopicListener {
+public class StatusUpdateTopicListener {
 
     @RabbitListener(
             bindings = @QueueBinding(
@@ -19,7 +19,7 @@ public class TeamSuccessTopicListener {
                     key = "${spring.rabbitmq.config.producer.topic_status_update.routing_key}"
             )
     )
-    public void listener(Object message) {
+    public void listener(String message) {
         log.info("接收消息:{}", message);
     }
 
