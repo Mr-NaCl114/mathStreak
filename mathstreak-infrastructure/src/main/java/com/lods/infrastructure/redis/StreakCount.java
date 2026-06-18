@@ -41,6 +41,8 @@ public class StreakCount {
         // result == -2 表示 accountTodayRemainingCount 为 0（无剩余次数），操作被阻止
         if (result != null && result == -2L) {
             throw new AppException(ResponseCode.REMAIN_COUNT_ZERO.getCode(), ResponseCode.REMAIN_COUNT_ZERO.getInfo());
+        } else if (result == 1) {
+            
         }
     }
 

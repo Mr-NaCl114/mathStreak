@@ -17,5 +17,6 @@ public class GameStatus {
     private Integer maxLife;
     private Integer accountTodayRemainingCount;
     private Integer answeringCount;
-
+    private Integer failTimes;
+    private Integer interruptTimes;
 }

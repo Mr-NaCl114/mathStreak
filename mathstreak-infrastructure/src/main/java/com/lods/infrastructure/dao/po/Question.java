@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Question {
+
     private Integer questionId;
     private String description;
     private String optA;
@@ -21,4 +22,6 @@ public class Question {
     private Integer total;
     private String analysis;
     private String aiAnswer;
+    private Integer failTimes;
+    private Integer interruptTimes;
 }

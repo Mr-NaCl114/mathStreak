@@ -6,8 +6,9 @@ import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.core.TopicExchange;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
-//@Configuration
+@Configuration
 public class RabbitMQConfig {
 
     @Value("${spring.rabbitmq.config.producer.exchange}")
@@ -25,9 +26,9 @@ public class RabbitMQConfig {
      * 绑定队列到交换机
      */
     @Bean
-    public Binding topicTeamSuccessBinding(
-            @Value("${spring.rabbitmq.config.producer.topic_status_update.routing_key}") String routingKey,
-            @Value("${spring.rabbitmq.config.producer.topic_status_update.queue}") String queue) {
+    public Binding topicSubmitsBinding(
+            @Value("${spring.rabbitmq.config.producer.topic_submit.routing_key}") String routingKey,
+            @Value("${spring.rabbitmq.config.producer.topic_submit.queue}") String queue) {
         return BindingBuilder.bind(new Queue(queue, true))
                 .to(topicExchange())
                 .with(routingKey);

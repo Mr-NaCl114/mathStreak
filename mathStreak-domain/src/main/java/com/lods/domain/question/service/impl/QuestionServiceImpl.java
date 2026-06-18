@@ -1,5 +1,6 @@
 package com.lods.domain.question.service.impl;
 
+import com.lods.domain.question.adapter.port.IQuestionPushPort;
 import com.lods.domain.question.adapter.repository.IQuestionRepository;
 import com.lods.domain.question.model.entity.QuestionCorrectEntity;
 import com.lods.domain.question.model.entity.QuestionDataResEntity;
@@ -38,6 +39,7 @@ public class QuestionServiceImpl implements IQuestionService {
 
     @Override
     public QuestionCorrectEntity submit(QuestionSubmitEntity questionSubmitEntity) {
+
         //  在redis创建标识
         String sign = questionRepository.createAnswerSign();
         log.info("上传为 {}, 提交的答案: {}, 创建标识: {}", questionSubmitEntity.getType(), questionSubmitEntity.getAnswerContent(), sign);

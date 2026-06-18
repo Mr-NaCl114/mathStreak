@@ -14,9 +14,9 @@ public class StatusUpdateTopicListener {
 
     @RabbitListener(
             bindings = @QueueBinding(
-                    value = @Queue(value = "${spring.rabbitmq.config.producer.topic_status_update.queue}"),
+                    value = @Queue(value = "${spring.rabbitmq.config.producer.topic_submit.queue}"),
                     exchange = @Exchange(value = "${spring.rabbitmq.config.producer.exchange}", type = ExchangeTypes.TOPIC),
-                    key = "${spring.rabbitmq.config.producer.topic_status_update.routing_key}"
+                    key = "${spring.rabbitmq.config.producer.topic_submit.routing_key}"
             )
     )
     public void listener(String message) {

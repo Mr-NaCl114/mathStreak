@@ -73,6 +73,7 @@ public class QuestionController implements IQuestionController {
         QuestionCorrectEntity res = IQuestionService.submit(submit);
         Boolean isCorrect = res.getIsCorrect();
 
+        //  状态更新
         IStatusService.updateStreakCountByIsCorrect(isCorrect);
 
         lodsWebSocketHandlerListener.sendMessage(IStatusService.getCurrentStatus());
