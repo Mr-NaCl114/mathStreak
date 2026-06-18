@@ -24,7 +24,7 @@ public class StreakCount {
         this.streakScript.setResultType(Long.class);
     }
 
-    public void isCorrect(boolean isCorrect) {
+    public Constants.FailResult isCorrect(boolean isCorrect) {
         // 构建 KEYS 集合
         List<String> keys = Arrays.asList(
                 Constants.WebStatus.LIFE.getValue(),
@@ -39,11 +39,15 @@ public class StreakCount {
         Long result = stringRedisTemplate.execute(streakScript, keys, arg);
 
         // result == -2 表示 accountTodayRemainingCount 为 0（无剩余次数），操作被阻止
-        if (result != null && result == -2L) {
+        if (result != null && result == 0L) {
             throw new AppException(ResponseCode.REMAIN_COUNT_ZERO.getCode(), ResponseCode.REMAIN_COUNT_ZERO.getInfo());
-        } else if (result == 1) {
-            
+        } else if (result == -1) {
+            return Constants.FailResult.FAIL_THIS;
+        } else if (result == -2) {
+            return Constants.FailResult.INTERRUPTED;
         }
+
+        return null;
     }
 
     // 这里是 Lua 脚本内容
@@ -59,7 +63,7 @@ public class StreakCount {
                 -- 检查 accountTodayRemainingCount 是否为 0，为 0 则退出，不为 0 则 -1 后继续
                 local remaining_count = tonumber(redis.call('GET', remaining_count_key) or '0')
                 if remaining_count == 0 then
-                    return -2
+                    return 0
                 end
                 redis.call('DECR', remaining_count_key)
                 
@@ -85,11 +89,11 @@ public class StreakCount {
                     if current_life - 1 <= 0 then
                         redis.call('SET', life_key, max_life)
                         redis.call('SET', total_streak_key, '0')
+                        return -2;
                     else
                         redis.call('DECR', life_key)
+                        return -1;
                     end
-                
-                    return 0
                 end
                 """;
     }

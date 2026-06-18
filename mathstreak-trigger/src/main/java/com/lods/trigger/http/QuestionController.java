@@ -9,6 +9,7 @@ import com.lods.domain.question.model.entity.QuestionCorrectEntity;
 import com.lods.domain.question.model.entity.QuestionDataResEntity;
 import com.lods.domain.question.model.entity.QuestionSubmitEntity;
 import com.lods.domain.question.service.IQuestionService;
+import com.lods.domain.status.model.entity.QuestionDescriptionCorrectEntity;
 import com.lods.domain.status.service.IStatusService;
 import com.lods.trigger.listener.LodsWebSocketHandlerListener;
 import com.lods.types.common.enums.ResponseCode;
@@ -71,10 +72,13 @@ public class QuestionController implements IQuestionController {
 
         //  获取结果
         QuestionCorrectEntity res = IQuestionService.submit(submit);
-        Boolean isCorrect = res.getIsCorrect();
 
         //  状态更新
-        IStatusService.updateStreakCountByIsCorrect(isCorrect);
+        IStatusService.updateStreakCountByIsCorrect(QuestionDescriptionCorrectEntity.builder()
+                .questionId(res.getQuestionId())
+                .type(res.getType())
+                .isCorrect(res.getIsCorrect())
+                .build());
 
         lodsWebSocketHandlerListener.sendMessage(IStatusService.getCurrentStatus());
 
@@ -82,7 +86,7 @@ public class QuestionController implements IQuestionController {
                 .code(ResponseCode.SUCCESS.getCode())
                 .info(ResponseCode.SUCCESS.getInfo())
                 .data(CheckRes.builder()
-                        .isCorrect(isCorrect)
+                        .isCorrect(res.getIsCorrect())
                         .correctLatexAnswer(res.getCorrectLatexAnswer())
                         .sign(res.getSign())
                         .build())

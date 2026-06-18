@@ -2,6 +2,7 @@ package com.lods.domain.status.service;
 
 import com.lods.domain.status.model.entity.CurrentAnswerChangeEntity;
 import com.lods.domain.status.model.entity.GameStatusEntity;
+import com.lods.domain.status.model.entity.QuestionDescriptionCorrectEntity;
 
 public interface IStatusService {
     GameStatusEntity getCurrentStatus();
@@ -14,5 +15,5 @@ public interface IStatusService {
 
     void resetRemainCount();
 
-    void updateStreakCountByIsCorrect(boolean isCorrect);
+    void updateStreakCountByIsCorrect(QuestionDescriptionCorrectEntity questionDescriptionCorrectEntity);
 }

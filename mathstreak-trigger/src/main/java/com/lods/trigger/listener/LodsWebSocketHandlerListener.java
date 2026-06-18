@@ -29,8 +29,8 @@ public class LodsWebSocketHandlerListener extends TextWebSocketHandler {
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
-//        log.info("新连接建立: {}, 远程IP：{}", session.getId(), session.getRemoteAddress());
-        log.info("新连接建立, 远程IP：{}", session.getRemoteAddress());
+//        log.info("新连接建立: {}, 远程IP: {}", session.getId(), session.getRemoteAddress());
+        log.info("新连接建立, 远程IP: {}", session.getRemoteAddress());
 
         //  +1当前连接人数
         sessionMap.put(session.getId(), session);
@@ -51,7 +51,7 @@ public class LodsWebSocketHandlerListener extends TextWebSocketHandler {
 
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
-        log.info("连接关闭, 远程IP：{}", session.getRemoteAddress());
+        log.info("连接关闭, 远程IP: {}", session.getRemoteAddress());
 
         //  -1当前连接人数
         sessionMap.remove(session.getId());
@@ -64,8 +64,8 @@ public class LodsWebSocketHandlerListener extends TextWebSocketHandler {
     }
 
     public void sendMessage(Object message) throws IOException {
-        log.info("发送消息： {}", message);
-        //  log.info("当前在线连接数：{}", sessionMap.size());
+        log.info("发送状态: {}", message);
+        //  log.info("当前在线连接数: {}", sessionMap.size());
         for (WebSocketSession session : sessionMap.values()) {
             String json = new ObjectMapper().writeValueAsString(Response.builder()
                     .code(ResponseCode.SUCCESS.getCode())

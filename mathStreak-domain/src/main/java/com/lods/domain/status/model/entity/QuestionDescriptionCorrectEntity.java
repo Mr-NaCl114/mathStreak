@@ -1,4 +1,4 @@
-package com.lods.domain.question.model.entity;
+package com.lods.domain.status.model.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,11 +9,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class QuestionCorrectEntity {
-
-    private Boolean isCorrect;
-    private String correctLatexAnswer;
-    private String sign;
+public class QuestionDescriptionCorrectEntity {
     private Integer type;
     private Integer questionId;
+    private Boolean isCorrect;
 }

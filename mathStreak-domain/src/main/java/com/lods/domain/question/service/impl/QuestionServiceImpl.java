@@ -1,6 +1,5 @@
 package com.lods.domain.question.service.impl;
 
-import com.lods.domain.question.adapter.port.IQuestionPushPort;
 import com.lods.domain.question.adapter.repository.IQuestionRepository;
 import com.lods.domain.question.model.entity.QuestionCorrectEntity;
 import com.lods.domain.question.model.entity.QuestionDataResEntity;
@@ -53,6 +52,8 @@ public class QuestionServiceImpl implements IQuestionService {
                     .isCorrect(res)
                     .correctLatexAnswer(questionVO.getAnswer())
                     .sign(sign)
+                    .type(questionSubmitEntity.getType())
+                    .questionId(questionSubmitEntity.getQuestionId())
                     .build();
         }
 
@@ -82,6 +83,8 @@ public class QuestionServiceImpl implements IQuestionService {
                 .isCorrect(res)
                 .correctLatexAnswer(questions.getAnswer())
                 .sign(sign)
+                .type(questionSubmitEntity.getType())
+                .questionId(questionSubmitEntity.getQuestionId())
                 .build();
     }
 }

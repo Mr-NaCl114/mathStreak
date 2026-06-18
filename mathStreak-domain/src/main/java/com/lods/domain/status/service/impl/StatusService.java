@@ -1,10 +1,13 @@
 package com.lods.domain.status.service.impl;
 
+import com.lods.domain.status.apadter.port.IFailPushPort;
 import com.lods.domain.status.apadter.repository.IStatusRepository;
 import com.lods.domain.status.model.entity.CurrentAnswerChangeEntity;
 import com.lods.domain.status.model.entity.GameStatusEntity;
+import com.lods.domain.status.model.entity.QuestionDescriptionCorrectEntity;
 import com.lods.domain.status.model.valobj.GameStatusVO;
 import com.lods.domain.status.service.IStatusService;
+import com.lods.types.common.constants.Constants;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -16,6 +19,8 @@ public class StatusService implements IStatusService {
 
     @Resource
     private IStatusRepository statusRepository;
+    @Resource
+    private IFailPushPort failPushPort;
 
     @Override
     public GameStatusEntity getCurrentStatus() {
@@ -59,8 +64,17 @@ public class StatusService implements IStatusService {
     }
 
     @Override
-    public void updateStreakCountByIsCorrect(boolean isCorrect) {
+    public void updateStreakCountByIsCorrect(QuestionDescriptionCorrectEntity questionDescriptionCorrectEntity) {
 
-        statusRepository.updateStreakCountByIsCorrect(isCorrect);
+        Boolean isCorrect = questionDescriptionCorrectEntity.getIsCorrect();
+
+        Constants.FailResult res = statusRepository.updateStreakCountByIsCorrect(isCorrect);
+
+        if (res == null) return;
+        if (res == Constants.FailResult.FAIL_THIS) {
+            failPushPort.failTimesPush(questionDescriptionCorrectEntity);
+        } else if (res == Constants.FailResult.INTERRUPTED) {
+            failPushPort.interruptTimesPush(questionDescriptionCorrectEntity);
+        }
     }
 }

@@ -14,13 +14,24 @@ public class StatusUpdateTopicListener {
 
     @RabbitListener(
             bindings = @QueueBinding(
-                    value = @Queue(value = "${spring.rabbitmq.config.producer.topic_submit.queue}"),
+                    value = @Queue(value = "${spring.rabbitmq.config.producer.topic_fail_submit.queue}"),
                     exchange = @Exchange(value = "${spring.rabbitmq.config.producer.exchange}", type = ExchangeTypes.TOPIC),
-                    key = "${spring.rabbitmq.config.producer.topic_submit.routing_key}"
+                    key = "${spring.rabbitmq.config.producer.topic_fail_submit.routing_key}"
             )
     )
-    public void listener(String message) {
-        log.info("接收消息:{}", message);
+    public void failSubmitListener(String message) {
+        log.info("failSubmitListener 接收消息:{}", message);
+    }
+
+    @RabbitListener(
+            bindings = @QueueBinding(
+                    value = @Queue(value = "${spring.rabbitmq.config.producer.topic_interrupt_submit.queue}"),
+                    exchange = @Exchange(value = "${spring.rabbitmq.config.producer.exchange}", type = ExchangeTypes.TOPIC),
+                    key = "${spring.rabbitmq.config.producer.topic_interrupt_submit.routing_key}"
+            )
+    )
+    public void interruptSubmitListener(String message) {
+        log.info("interruptSubmitListener 接收消息:{}", message);
     }
 
 }

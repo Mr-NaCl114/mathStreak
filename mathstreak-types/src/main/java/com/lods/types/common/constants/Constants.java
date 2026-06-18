@@ -54,4 +54,12 @@ public class Constants {
 
         private final String value;
     }
+
+    @AllArgsConstructor
+    @Getter
+    public enum FailResult {
+        FAIL_THIS,
+        INTERRUPTED,
+
+    }
 }

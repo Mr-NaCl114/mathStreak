@@ -26,9 +26,18 @@ public class RabbitMQConfig {
      * 绑定队列到交换机
      */
     @Bean
-    public Binding topicSubmitsBinding(
-            @Value("${spring.rabbitmq.config.producer.topic_submit.routing_key}") String routingKey,
-            @Value("${spring.rabbitmq.config.producer.topic_submit.queue}") String queue) {
+    public Binding topicFailSubmitBinding(
+            @Value("${spring.rabbitmq.config.producer.topic_fail_submit.routing_key}") String routingKey,
+            @Value("${spring.rabbitmq.config.producer.topic_fail_submit.queue}") String queue) {
+        return BindingBuilder.bind(new Queue(queue, true))
+                .to(topicExchange())
+                .with(routingKey);
+    }
+
+    @Bean
+    public Binding topicInterruptSubmitBinding(
+            @Value("${spring.rabbitmq.config.producer.topic_interrupt_submit.routing_key}") String routingKey,
+            @Value("${spring.rabbitmq.config.producer.topic_interrupt_submit.queue}") String queue) {
         return BindingBuilder.bind(new Queue(queue, true))
                 .to(topicExchange())
                 .with(routingKey);

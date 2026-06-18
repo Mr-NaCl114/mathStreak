@@ -2,6 +2,7 @@ package com.lods.domain.status.apadter.repository;
 
 import com.lods.domain.status.model.entity.CurrentAnswerChangeEntity;
 import com.lods.domain.status.model.valobj.GameStatusVO;
+import com.lods.types.common.constants.Constants;
 
 public interface IStatusRepository {
 
@@ -15,5 +16,5 @@ public interface IStatusRepository {
 
     void resetRemainCount();
 
-    void updateStreakCountByIsCorrect(boolean isCorrect);
+    Constants.FailResult updateStreakCountByIsCorrect(boolean isCorrect);
 }
