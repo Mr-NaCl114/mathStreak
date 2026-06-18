@@ -13,6 +13,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import java.util.concurrent.CompletableFuture;
+
 @Slf4j
 @Service
 public class StatusService implements IStatusService {
@@ -71,10 +73,12 @@ public class StatusService implements IStatusService {
         Constants.FailResult res = statusRepository.updateStreakCountByIsCorrect(isCorrect);
 
         if (res == null) return;
-        if (res == Constants.FailResult.FAIL_THIS) {
-            failPushPort.failTimesPush(questionDescriptionCorrectEntity);
-        } else if (res == Constants.FailResult.INTERRUPTED) {
-            failPushPort.interruptTimesPush(questionDescriptionCorrectEntity);
-        }
+        CompletableFuture.runAsync(() -> {
+            if (res == Constants.FailResult.FAIL_THIS) {
+                failPushPort.failTimesPush(questionDescriptionCorrectEntity);
+            } else if (res == Constants.FailResult.INTERRUPTED) {
+                failPushPort.interruptTimesPush(questionDescriptionCorrectEntity);
+            }
+        });
     }
 }

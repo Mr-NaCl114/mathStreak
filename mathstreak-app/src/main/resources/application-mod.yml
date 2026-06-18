@@ -62,11 +62,16 @@ spring:
         # 绑定交换机，统一一套交换机
         exchange: math_streak_exchange
         # 消息主题配置；路由key、队列
-        topic_status_update:
+        topic_fail_submit:
           # 消息主题
-          routing_key: topic.status_update
+          routing_key: topic.fail_submit
           # 消费队列
-          queue: math_streak_queue_2_topic_status_update
+          queue: math_streak_queue_2_fail_submit
+        topic_interrupt_submit:
+          # 消息主题
+          routing_key: topic.interrupt_submit
+          # 消费队列
+          queue: math_streak_queue_2_interrupt_submit
 
   data:
     redis:
