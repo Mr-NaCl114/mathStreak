@@ -1,6 +1,7 @@
 package com.lods.infrastructure.dao;
 
 import com.lods.domain.answer.model.entity.AIAnswerInsertEntity;
+import com.lods.domain.status.model.entity.QuestionDescriptionEntity;
 import com.lods.infrastructure.dao.po.Question;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -23,4 +24,8 @@ public interface IQuestionChoiceDao {
     void batchUpdateAIAnswer(List<AIAnswerInsertEntity> list);
 
     String getAnswerByQuestionId(Integer questionId);
+
+    void updateFailTimes(QuestionDescriptionEntity questionDescriptionEntity);
+
+    void updateInterruptTimes(QuestionDescriptionEntity questionDescriptionEntity);
 }

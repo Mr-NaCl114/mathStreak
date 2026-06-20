@@ -60,4 +60,16 @@
         from gap
         where id = #{questionId}
     </select>
+
+    <update id="updateFailTimes" parameterType="com.lods.domain.status.model.entity.QuestionDescriptionEntity">
+        update gap
+        set fail_times = fail_times + 1
+        where id = #{questionId}
+    </update>
+
+    <update id="updateInterruptTimes" parameterType="com.lods.domain.status.model.entity.QuestionDescriptionEntity">
+        update gap
+        set interrupt_times = interrupt_times + 1
+        where id = #{questionId}
+    </update>
 </mapper>

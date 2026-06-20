@@ -2,7 +2,10 @@ package com.lods.infrastructure.adapter.repository;
 
 import com.lods.domain.status.apadter.repository.IStatusRepository;
 import com.lods.domain.status.model.entity.CurrentAnswerChangeEntity;
+import com.lods.domain.status.model.entity.QuestionDescriptionEntity;
 import com.lods.domain.status.model.valobj.GameStatusVO;
+import com.lods.infrastructure.dao.IQuestionChoiceDao;
+import com.lods.infrastructure.dao.IQuestionGapDao;
 import com.lods.infrastructure.dao.po.GameStatus;
 import com.lods.infrastructure.redis.StatusOpt;
 import com.lods.infrastructure.redis.StreakCount;
@@ -19,6 +22,10 @@ public class StatusRepository implements IStatusRepository {
     private StatusOpt statusOpt;
     @Resource
     private StreakCount streakCount;
+    @Resource
+    private IQuestionChoiceDao questionChoiceDao;
+    @Resource
+    private IQuestionGapDao questionGapDao;
 
     @Override
     public GameStatusVO getCurrentStatus() {
@@ -64,5 +71,26 @@ public class StatusRepository implements IStatusRepository {
 
         return streakCount.isCorrect(isCorrect);
     }
+
+    @Override
+    public void updateFailTimes(QuestionDescriptionEntity questionDescriptionEntity) {
+
+        if (questionDescriptionEntity.getType().equals(Constants.TypeOfQuestion.CHOICE.getCode())) {
+            questionChoiceDao.updateFailTimes(questionDescriptionEntity);
+        } else if (questionDescriptionEntity.getType().equals(Constants.TypeOfQuestion.GAP.getCode())) {
+            questionGapDao.updateFailTimes(questionDescriptionEntity);
+        }
+    }
+
+    @Override
+    public void updateInterruptTimes(QuestionDescriptionEntity questionDescriptionEntity) {
+
+        if (questionDescriptionEntity.getType().equals(Constants.TypeOfQuestion.CHOICE.getCode())) {
+            questionChoiceDao.updateInterruptTimes(questionDescriptionEntity);
+        } else if (questionDescriptionEntity.getType().equals(Constants.TypeOfQuestion.GAP.getCode())) {
+            questionGapDao.updateInterruptTimes(questionDescriptionEntity);
+        }
+    }
+
 }
 

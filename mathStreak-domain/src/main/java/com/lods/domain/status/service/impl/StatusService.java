@@ -5,6 +5,7 @@ import com.lods.domain.status.apadter.repository.IStatusRepository;
 import com.lods.domain.status.model.entity.CurrentAnswerChangeEntity;
 import com.lods.domain.status.model.entity.GameStatusEntity;
 import com.lods.domain.status.model.entity.QuestionDescriptionCorrectEntity;
+import com.lods.domain.status.model.entity.QuestionDescriptionEntity;
 import com.lods.domain.status.model.valobj.GameStatusVO;
 import com.lods.domain.status.service.IStatusService;
 import com.lods.types.common.constants.Constants;
@@ -68,17 +69,35 @@ public class StatusService implements IStatusService {
     @Override
     public void updateStreakCountByIsCorrect(QuestionDescriptionCorrectEntity questionDescriptionCorrectEntity) {
 
+        //  判题和结果
         Boolean isCorrect = questionDescriptionCorrectEntity.getIsCorrect();
-
         Constants.FailResult res = statusRepository.updateStreakCountByIsCorrect(isCorrect);
+
+        QuestionDescriptionEntity description = QuestionDescriptionEntity.builder()
+                .type(questionDescriptionCorrectEntity.getType())
+                .questionId(questionDescriptionCorrectEntity.getQuestionId())
+                .build();
+
 
         if (res == null) return;
         CompletableFuture.runAsync(() -> {
             if (res == Constants.FailResult.FAIL_THIS) {
-                failPushPort.failTimesPush(questionDescriptionCorrectEntity);
+                failPushPort.failTimesPush(description);
             } else if (res == Constants.FailResult.INTERRUPTED) {
-                failPushPort.interruptTimesPush(questionDescriptionCorrectEntity);
+                failPushPort.interruptTimesPush(description);
             }
         });
+    }
+
+    @Override
+    public void updateFailTimes(QuestionDescriptionEntity questionDescriptionEntity) {
+
+        statusRepository.updateFailTimes(questionDescriptionEntity);
+    }
+
+    @Override
+    public void updateInterruptTimes(QuestionDescriptionEntity questionDescriptionEntity) {
+
+        statusRepository.updateInterruptTimes(questionDescriptionEntity);
     }
 }

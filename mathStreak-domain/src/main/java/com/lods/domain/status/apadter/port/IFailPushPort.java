@@ -1,11 +1,10 @@
 package com.lods.domain.status.apadter.port;
 
-import com.lods.domain.question.model.entity.QuestionSubmitEntity;
-import com.lods.domain.status.model.entity.QuestionDescriptionCorrectEntity;
+import com.lods.domain.status.model.entity.QuestionDescriptionEntity;
 
 public interface IFailPushPort {
 
-    void failTimesPush(QuestionDescriptionCorrectEntity questionDescriptionCorrectEntity);
+    void failTimesPush(QuestionDescriptionEntity questionDescriptionEntity);
 
-    void interruptTimesPush(QuestionDescriptionCorrectEntity questionDescriptionCorrectEntity);
+    void interruptTimesPush(QuestionDescriptionEntity questionDescriptionEntity);
 }

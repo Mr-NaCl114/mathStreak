@@ -1,8 +1,7 @@
 package com.lods.infrastructure.adapter.port;
 
 import com.lods.domain.status.apadter.port.IFailPushPort;
-import com.lods.domain.question.model.entity.QuestionSubmitEntity;
-import com.lods.domain.status.model.entity.QuestionDescriptionCorrectEntity;
+import com.lods.domain.status.model.entity.QuestionDescriptionEntity;
 import com.lods.infrastructure.event.EventPublisher;
 import jakarta.annotation.Resource;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,14 +19,14 @@ public class FailPushPort implements IFailPushPort {
     private String interruptTimesPushRoutingKey;
 
     @Override
-    public void failTimesPush(QuestionDescriptionCorrectEntity questionDescriptionCorrectEntity) {
+    public void failTimesPush(QuestionDescriptionEntity questionDescriptionEntity) {
 
-        eventPublisher.publish(failTimesPushRoutingKey, questionDescriptionCorrectEntity.toString());
+        eventPublisher.publish(failTimesPushRoutingKey, questionDescriptionEntity);
     }
 
     @Override
-    public void interruptTimesPush(QuestionDescriptionCorrectEntity questionDescriptionCorrectEntity) {
+    public void interruptTimesPush(QuestionDescriptionEntity questionDescriptionEntity) {
 
-        eventPublisher.publish(interruptTimesPushRoutingKey, questionDescriptionCorrectEntity.toString());
+        eventPublisher.publish(interruptTimesPushRoutingKey, questionDescriptionEntity);
     }
 }

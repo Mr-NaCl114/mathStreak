@@ -9,9 +9,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class QuestionDescriptionCorrectEntity {
+public class QuestionDescriptionEntity {
 
     private Integer type;
     private Integer questionId;
-    private Boolean isCorrect;
 }
