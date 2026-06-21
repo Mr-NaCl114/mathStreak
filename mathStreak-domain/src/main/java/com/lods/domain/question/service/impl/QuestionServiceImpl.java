@@ -74,7 +74,7 @@ public class QuestionServiceImpl implements IQuestionService {
                 log.info("result: {}，is?: {}", result, result.isZERO());
                 res = result.isZERO();
             } catch (Exception e) {
-                log.info("表达式解析或化简失败: 标准答案={}, 用户答案={}", questions.getAnswer(), questionSubmitEntity.getAnswerContent(), e);
+                log.info("表达式解析或化简失败: 标准答案={}, 用户答案={}", questions.getAnswer(), questionSubmitEntity.getAnswerContent());
                 // 解析失败且字符串不匹配，则判定为错误
             }
         }

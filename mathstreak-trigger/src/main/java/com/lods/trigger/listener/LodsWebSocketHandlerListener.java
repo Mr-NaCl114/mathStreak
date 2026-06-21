@@ -78,7 +78,7 @@ public class LodsWebSocketHandlerListener extends TextWebSocketHandler {
 
     public void sendMessageForOne(Object message, WebSocketSession session) throws IOException {
 
-        log.info("ONE发送状态: {}", message);
+        log.info("ONE发送状态");
         String json = new ObjectMapper().writeValueAsString(Response.builder()
                 .code(ResponseCode.SUCCESS.getCode())
                 .info(ResponseCode.SUCCESS.getInfo())
