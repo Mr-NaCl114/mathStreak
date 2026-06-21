@@ -2,5 +2,5 @@ spring:
   config:
     name: mathStreak-mvc
   profiles:
-#    active: pro
-    active: dev
+    active: pro
+#    active: dev

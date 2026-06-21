@@ -18,7 +18,7 @@ services:
       - ./mathstreak.sql:/docker-entrypoint-initdb.d/mathstreak.sql
     command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
     networks:
-      - my-network
+      - lods-network
     healthcheck:
       test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
       interval: 10s
@@ -36,12 +36,35 @@ services:
     volumes:
       - ./redis/data:/data
     networks:
-      - my-network
+      - lods-network
     healthcheck:
       test: [ "CMD", "redis-cli", "-a", "114514", "ping" ]
       interval: 10s
       timeout: 5s
       retries: 3
+
+  # RabbitMQ 3.13 Management
+  # 对应 application-pro.yml 中 spring.rabbitmq.* 配置
+  rabbitmq:
+    image: rabbitmq:4.3.2-management
+    container_name: rabbitmq
+    restart: always
+    environment:
+      TZ: Asia/Shanghai
+      RABBITMQ_DEFAULT_USER: rabbitmq
+      RABBITMQ_DEFAULT_PASS: 7891919
+    ports:
+      - "5672:5672"     # AMQP 服务端口
+      - "15670:15672"   # Management 管理界面端口
+    volumes:
+      - ./rabbitmq/data:/var/lib/rabbitmq
+    networks:
+      - lods-network
+    healthcheck:
+      test: [ "CMD", "rabbitmq-diagnostics", "check_port_connectivity" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   # Redis 数据导入器：等待 Redis 启动后导入备份数据
 #  redis-importer:
@@ -60,7 +83,7 @@ services:
   # MathStreak Application
   mathstreak:
     pull_policy: never
-    image: mathstreak:1.1.1
+    image: mathstreak:1.2.6
     # build: .
     container_name: mathstreak
     restart: on-failure
@@ -77,16 +100,22 @@ services:
       - SPRING_DATA_REDIS_HOST=redis
       - SPRING_DATA_REDIS_PORT=6379
       - SPRING_DATA_REDIS_PASSWORD=114514
+      - SPRING_RABBITMQ_ADDRESSES=rabbitmq
+      - SPRING_RABBITMQ_PORT=5672
+      - SPRING_RABBITMQ_USERNAME=rabbitmq
+      - SPRING_RABBITMQ_PASSWORD=7891919
     depends_on:
       mysql:
         condition: service_healthy
       redis:
         condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
     volumes:
       - ./log:/var/log/mathstreak
     networks:
-      - my-network
+      - lods-network
 
 networks:
-  my-network:
+  lods-network:
     driver: bridge
