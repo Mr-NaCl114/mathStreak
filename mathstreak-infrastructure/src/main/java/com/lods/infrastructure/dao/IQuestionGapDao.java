@@ -27,4 +27,8 @@ public interface IQuestionGapDao {
     void updateFailTimes(QuestionDescriptionEntity questionDescriptionEntity);
 
     void updateInterruptTimes(QuestionDescriptionEntity questionDescriptionEntity);
+
+    List<Question> queryAllFailInterrupt();
+
+    Question queryAssignFailInterrupt(Integer questionId);
 }

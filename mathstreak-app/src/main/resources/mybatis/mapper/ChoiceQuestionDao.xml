@@ -14,7 +14,7 @@
         <result column="ai_answer" property="aiAnswer"/>
         <result column="analysis" property="analysis"/>
         <result column="fail_times" property="failTimes"/>
-        <result column="interrupt_times" property="failTimes"/>
+        <result column="interrupt_times" property="interruptTimes"/>
     </resultMap>
 
     <select id="getCurrentQuestion" resultMap="ChoiceQuestionMap">
@@ -76,4 +76,16 @@
         set interrupt_times = interrupt_times + 1
         where id = #{questionId}
     </update>
+
+    <select id="queryAllFailInterrupt" resultMap="ChoiceQuestionMap">
+        select id, fail_times, interrupt_times
+        from choice
+        where fail_times > 0 or interrupt_times > 0
+    </select>
+
+    <select id="queryAssignFailInterrupt" resultMap="ChoiceQuestionMap">
+        select id, fail_times, interrupt_times
+        from choice
+        where id = #{questionId}
+    </select>
 </mapper>

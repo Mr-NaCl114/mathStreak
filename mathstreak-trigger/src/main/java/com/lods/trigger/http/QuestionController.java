@@ -10,6 +10,7 @@ import com.lods.domain.question.model.entity.QuestionDataResEntity;
 import com.lods.domain.question.model.entity.QuestionSubmitEntity;
 import com.lods.domain.question.service.IQuestionService;
 import com.lods.domain.status.model.entity.QuestionDescriptionCorrectEntity;
+import com.lods.domain.status.model.entity.QuestionDescriptionEntity;
 import com.lods.domain.status.service.IStatusService;
 import com.lods.trigger.listener.LodsWebSocketHandlerListener;
 import com.lods.types.common.enums.ResponseCode;
@@ -80,7 +81,13 @@ public class QuestionController implements IQuestionController {
                 .isCorrect(res.getIsCorrect())
                 .build());
 
-        lodsWebSocketHandlerListener.sendMessage(IStatusService.getCurrentStatus());
+        lodsWebSocketHandlerListener.sendMessageForAll(IStatusService.getCurrentStatusForAll(
+            res.getIsCorrect() ? null :
+                QuestionDescriptionEntity.builder()
+                .type(res.getType())
+                .questionId(res.getQuestionId())
+                .build()
+        ));
 
         return Response.builder()
                 .code(ResponseCode.SUCCESS.getCode())
@@ -99,7 +106,7 @@ public class QuestionController implements IQuestionController {
 
         IStatusService.resetRemainCount();
 
-        lodsWebSocketHandlerListener.sendMessage(IStatusService.getCurrentStatus());
+        lodsWebSocketHandlerListener.sendMessageForAll(IStatusService.getCurrentStatusForAll(null));
 
         return Response.builder()
                 .code(ResponseCode.SUCCESS.getCode())

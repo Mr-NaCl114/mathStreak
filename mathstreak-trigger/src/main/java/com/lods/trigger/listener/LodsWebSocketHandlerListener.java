@@ -40,14 +40,14 @@ public class LodsWebSocketHandlerListener extends TextWebSocketHandler {
 
         //  发送信息
         session.sendMessage(new TextMessage("连接完成"));
-        sendMessage(IStatusService.getCurrentStatus());
+        sendMessageForOne(IStatusService.getCurrentStatus(), session);
     }
 
-    @Override
-    protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
-        log.info("收到消息: {}", message.getPayload());
-        session.sendMessage(new TextMessage("服务器收到: " + message.getPayload()));
-    }
+//    @Override
+//    protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
+//        log.info("收到消息: {}", message.getPayload());
+//        session.sendMessage(new TextMessage("服务器收到: " + message.getPayload()));
+//    }
 
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
@@ -60,12 +60,12 @@ public class LodsWebSocketHandlerListener extends TextWebSocketHandler {
                 .build());
 
         //  发送信息
-        sendMessage(IStatusService.getCurrentStatus());
+        sendMessageForAll(IStatusService.getCurrentStatusForAll(null));
     }
 
-    public void sendMessage(Object message) throws IOException {
-        log.info("发送状态: {}", message);
-        //  log.info("当前在线连接数: {}", sessionMap.size());
+    public void sendMessageForAll(Object message) throws IOException {
+
+        log.info("ALL发送状态: {}", message);
         for (WebSocketSession session : sessionMap.values()) {
             String json = new ObjectMapper().writeValueAsString(Response.builder()
                     .code(ResponseCode.SUCCESS.getCode())
@@ -74,6 +74,18 @@ public class LodsWebSocketHandlerListener extends TextWebSocketHandler {
                     .build());
             session.sendMessage(new TextMessage(json));
         }
+    }
+
+    public void sendMessageForOne(Object message, WebSocketSession session) throws IOException {
+
+        log.info("ONE发送状态: {}", message);
+        String json = new ObjectMapper().writeValueAsString(Response.builder()
+                .code(ResponseCode.SUCCESS.getCode())
+                .info(ResponseCode.SUCCESS.getInfo())
+                .data(message)
+                .build());
+
+        session.sendMessage(new TextMessage(json));
     }
 }
 

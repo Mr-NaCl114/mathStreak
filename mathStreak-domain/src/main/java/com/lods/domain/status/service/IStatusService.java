@@ -1,12 +1,15 @@
 package com.lods.domain.status.service;
 
 import com.lods.domain.status.model.entity.CurrentAnswerChangeEntity;
-import com.lods.domain.status.model.entity.GameStatusEntity;
+import com.lods.domain.status.model.entity.GameStatusAndFailEntity;
 import com.lods.domain.status.model.entity.QuestionDescriptionCorrectEntity;
 import com.lods.domain.status.model.entity.QuestionDescriptionEntity;
 
 public interface IStatusService {
-    GameStatusEntity getCurrentStatus();
+
+    GameStatusAndFailEntity getCurrentStatus();
+
+    GameStatusAndFailEntity getCurrentStatusForAll(QuestionDescriptionEntity questionDescriptionEntity);
 
     void updateCurrentAnswer(CurrentAnswerChangeEntity currentAnswerChangeEntity);
 
